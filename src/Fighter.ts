@@ -1,5 +1,6 @@
+import { MessageEmbed } from "discord.js";
 import { Armor } from "./Armor";
-import { random } from "./utils";
+import { formatPercent, GOLD, inlineCode, random } from "./utils";
 
 export class Fighter {
   name: string;
@@ -30,5 +31,25 @@ export class Fighter {
     const source = new Fighter(this.name);
     Object.assign(source, this);
     return source;
+  }
+
+  show() {
+    const armor = formatPercent(this.armor);
+    const critChance = formatPercent(this.critChance);
+
+    const embed = new MessageEmbed()
+      .setTitle("Profile")
+      .setColor(GOLD)
+      .addField("Name", this.name)
+      .addField("Attack", inlineCode(this.attack.toString()), true)
+      .addField("HP", inlineCode(this.hp.toString()), true)
+      .addField("Armor", inlineCode(armor), true)
+      .addField("Crit Chance", inlineCode(critChance), true)
+      .addField("Crit Damage", inlineCode(`x${this.critDamage}`), true)
+
+    if (this.imageUrl)
+      embed.setThumbnail(this.imageUrl);
+
+    return embed;
   }
 }
