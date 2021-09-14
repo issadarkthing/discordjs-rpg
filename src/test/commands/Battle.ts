@@ -1,8 +1,21 @@
 import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
+import { Armor } from "../../Armor";
 import { Battle } from "../../Battle";
 import { Pet } from "../../Pet";
 import { Player } from "../../Player";
+
+class Dragon extends Pet {
+  name = "dragon";
+  id = "dragon";
+  attack = 20;
+}
+
+class Chest extends Armor {
+  name = "chest";
+  id = "chest";
+  armor = 0.8;
+}
 
 export default class BattleCommand extends Command {
   name = "battle";
@@ -18,9 +31,12 @@ export default class BattleCommand extends Command {
 
     author.attack = 30;
 
-    const pet = new Pet("yenyen");
+    const pet = new Dragon();
     pet.owner = author;
     author.pet = pet;
+
+    const chest = new Chest();
+    author.equipArmor(chest);
 
     const battle = new Battle(msg, [author, ...opponents]);
     await battle.run();
