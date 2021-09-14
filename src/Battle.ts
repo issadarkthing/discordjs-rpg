@@ -6,6 +6,8 @@ export class Battle {
   private round = 0;
   private msg: Message;
   private players: Player[];
+  /** Time interval to change to next frame */
+  interval = 6000;
 
   constructor(msg: Message, players: Player[]) {
     this.msg = msg;
@@ -80,7 +82,7 @@ export class Battle {
       if (player.pet && player.pet.isIntercept()) {
         const petEmbed = player.pet.intercept(opponent);
         await message.edit({ embeds: [petEmbed] });
-        await sleep(4000);
+        await sleep(this.interval);
       }
 
       const battleEmbed = this.attack(player, opponent);
@@ -103,7 +105,7 @@ export class Battle {
 
       // wait before next round
       if (battleQueue.length !== 1)
-        await sleep(4000);
+        await sleep(this.interval);
     }
 
     const winner = battleQueue[0];
