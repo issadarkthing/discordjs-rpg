@@ -1,13 +1,12 @@
 import { oneLine } from "common-tags";
 import { MessageEmbed } from "discord.js";
+import { Base } from "./Base";
 import { Fighter } from "./Fighter";
 import { Player } from "./Player";
 import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
 
 
-export abstract class Pet {
-  abstract name: string;
-  abstract id: string;
+export abstract class Pet extends Base {
   owner?: Player;
   imageUrl?: string;
   interceptRate = 0.05;
@@ -17,10 +16,13 @@ export abstract class Pet {
     return random().bool(this.interceptRate);
   }
 
+  setOwner(player: Player) {
+    player.pet = this;
+    this.owner = player;
+  }
+
   show() {
-
     const interceptRate = formatPercent(this.interceptRate);
-
     const embed = new MessageEmbed()
       .setTitle("Pet")
       .setColor(BROWN)

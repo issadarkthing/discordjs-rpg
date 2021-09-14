@@ -1,11 +1,10 @@
 import { MessageEmbed } from "discord.js";
+import { Base } from "./Base";
 import { Player } from "./Player";
 import { formatPercent, inlineCode, SILVER } from "./utils";
 
 
-export abstract class Armor {
-  abstract name: string;
-  abstract id: string;
+export abstract class Armor extends Base {
   owner?: Player;
   imageUrl?: string;
   armor = 0.05;

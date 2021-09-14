@@ -32,8 +32,7 @@ export default class BattleCommand extends Command {
     author.attack = 30;
 
     const pet = new Dragon();
-    pet.owner = author;
-    author.pet = pet;
+    pet.setOwner(author);
 
     const chest = new Chest();
     author.equipArmor(chest);
