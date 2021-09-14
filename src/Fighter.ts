@@ -1,3 +1,4 @@
+import { Armor } from "./Armor";
 import { random } from "./utils";
 
 export class Fighter {
@@ -8,11 +9,17 @@ export class Fighter {
   armor = 0.1;
   critChance = 0.3;
   critDamage = 1.2;
+  equippedArmors: Armor[] = [];
   imageUrl?: string;
 
   constructor(name: string) {
     this.name = name;
     this.id = name;
+  }
+
+  equipArmor(armor: Armor) {
+    this.armor += armor.armor;
+    this.equippedArmors.push(armor);
   }
 
   isCrit() {
