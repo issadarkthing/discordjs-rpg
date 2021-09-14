@@ -1,8 +1,9 @@
 import { MessageEmbed } from "discord.js";
 import { Armor } from "./Armor";
+import { Base } from "./Base";
 import { formatPercent, GOLD, inlineCode, random } from "./utils";
 
-export class Fighter {
+export class Fighter extends Base {
   name: string;
   id: string;
   attack = 10;
@@ -14,6 +15,7 @@ export class Fighter {
   imageUrl?: string;
 
   constructor(name: string) {
+    super();
     this.name = name;
     this.id = name;
   }
