@@ -12,6 +12,8 @@ export default class PetCommand extends Command {
     const author = new Player(msg.member!);
     const pet = new Pet("yenyen");
     pet.owner = author;
+    pet.imageUrl = "https://cdn.discordapp.com/attachments/574852830125359126/863997311532007475/8edc1273be7f8b1c4be3d72af3358e9b.png";
+
     author.pet = pet;
 
     const petEmbed = pet.show();

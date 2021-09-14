@@ -7,6 +7,7 @@ import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
 export class Pet {
   name: string;
   owner?: Player;
+  imageUrl?: string;
   interceptRate = 0.05;
   attack = 5;
 
@@ -29,6 +30,9 @@ export class Pet {
       .addField("Intercept Rate", inlineCode(interceptRate), true)
       .addField("Attack", inlineCode(this.attack), true)
 
+    if (this.imageUrl)
+      embed.setThumbnail(this.imageUrl);
+
     return embed;
   }
 
@@ -46,6 +50,9 @@ export class Pet {
         oneLine`${this.owner.name}'s ${this.name} attacks ${opponent.name} for
         ${bold(damageDealt)} damage!`
       );
+
+    if (this.imageUrl) 
+      embed.setThumbnail(this.imageUrl);
 
     return embed;
   }
