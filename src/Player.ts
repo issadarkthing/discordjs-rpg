@@ -1,9 +1,9 @@
 import { GuildMember } from "discord.js";
+import { Fighter } from "./Fighter";
 import { Pet } from "./Pet";
-import { random } from "./utils";
 
-export class Player {
-  name: string;
+export class Player extends Fighter {
+  id: string;
   attack = 10;
   hp = 100;
   armor = 0.1;
@@ -13,20 +13,10 @@ export class Player {
   pet?: Pet;
 
   constructor(member: GuildMember) {
+    super(member.displayName);
     this.member = member;
-    this.name = member.displayName;
-  }
-
-  get id() {
-    return this.member.id;
-  }
-
-  get imageUrl() {
-    return this.member.user.displayAvatarURL();
-  }
-
-  isCrit() {
-    return random().bool(this.critChance);
+    this.id = member.id;
+    this.imageUrl = this.member.user.displayAvatarURL();
   }
 
   copy() {

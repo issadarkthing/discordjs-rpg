@@ -1,5 +1,6 @@
 import { oneLine } from "common-tags";
 import { MessageEmbed } from "discord.js";
+import { Fighter } from "./Fighter";
 import { Player } from "./Player";
 import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
 
@@ -36,7 +37,7 @@ export class Pet {
     return embed;
   }
 
-  intercept(opponent: Player) {
+  intercept(opponent: Fighter) {
 
     if (!this.owner) throw new Error("pet cannot attack without owner");
 

@@ -1,17 +1,18 @@
 import { Message, MessageEmbed } from "discord.js";
-import { Player } from "./Player";
 import { GOLD, random, RED, sleep } from "./utils";
+import { Fighter } from "./Fighter";
+import { Player } from "./Player";
 
 export class Battle {
   private round = 0;
   private msg: Message;
-  private players: Player[];
+  private fighters: Fighter[];
   /** Time interval to change to next frame */
   interval = 6000;
 
-  constructor(msg: Message, players: Player[]) {
+  constructor(msg: Message, fighters: Fighter[]) {
     this.msg = msg;
-    this.players = [...new Set(players)];
+    this.fighters = [...new Set(fighters)];
   }
 
   private bar(progress: number, maxProgress: number) {
@@ -43,7 +44,7 @@ export class Battle {
     );
   }
 
-  private attack(p1: Player, p2: Player) {
+  private attack(p1: Fighter, p2: Fighter) {
     const isCrit = p1.isCrit();
     const attackRate = isCrit ? p1.attack * p1.critDamage : p1.attack;
     const armorProtection = p2.armor * attackRate;
@@ -54,7 +55,6 @@ export class Battle {
 
     const battleEmbed = new MessageEmbed()
       .setColor(RED)
-      .setThumbnail(p1.imageUrl)
       .addField("Attacking Player", p1.name, true)
       .addField("Defending Player", p2.name, true)
       .addField("Round", `\`${this.round.toString()}\``, true)
@@ -62,15 +62,18 @@ export class Battle {
       .addField("Damage Reduction", `\`${Math.round(armorProtection)}\``, true)
       .addField("Damage Done", `\`${Math.round(damageDealt)}\``, true);
 
+    if (p1.imageUrl)
+      battleEmbed.setThumbnail(p1.imageUrl)
+
     return battleEmbed;
   }
 
   async run() {
 
-    if (this.players.length <= 1)
+    if (this.fighters.length <= 1)
       throw new Error("cannot battle with 1 or less player");
 
-    let battleQueue = this.players.map(x => x.copy());
+    let battleQueue = this.fighters.map(x => x.copy());
     const message = await this.msg.channel.send("Starting battle");
 
     while (battleQueue.length !== 1) {
@@ -79,7 +82,7 @@ export class Battle {
       const player = battleQueue.shift()!;
       const opponent = random().pick(battleQueue);
 
-      if (player.pet && player.pet.isIntercept()) {
+      if (player instanceof Player && player.pet?.isIntercept()) {
         const petEmbed = player.pet.intercept(opponent);
         await message.edit({ embeds: [petEmbed] });
         await sleep(this.interval);
@@ -87,7 +90,7 @@ export class Battle {
 
       const battleEmbed = this.attack(player, opponent);
 
-      for (const p1 of this.players) {
+      for (const p1 of this.fighters) {
         const currHealth = [player, ...battleQueue].find(x => x.id === p1.id)?.hp;
         if (currHealth !== undefined) {
           this.progressBar(battleEmbed, p1.name, currHealth, p1.hp);
@@ -112,8 +115,10 @@ export class Battle {
     const winEmbed = new MessageEmbed()
       .setColor(GOLD)
       .setTitle("Battle Winner")
-      .setThumbnail(winner.imageUrl)
-      .setDescription(`${winner.name} has won the battle!`)
+      .setDescription(`${winner.name} has won the battle!`);
+
+    if (winner.imageUrl)
+      winEmbed.setThumbnail(winner.imageUrl)
 
     await message.edit({ embeds: [winEmbed] });
   }
