@@ -94,7 +94,9 @@ export class Battle {
         await this.msg.channel.send(`${opponent.name} has died in the battle`);
       } 
 
-      await sleep(4000);
+      // wait before next round
+      if (battleQueue.length !== 1)
+        await sleep(4000);
     }
 
     const winner = battleQueue[0];
