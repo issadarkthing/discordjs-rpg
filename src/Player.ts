@@ -1,4 +1,5 @@
 import { GuildMember } from "discord.js";
+import { Pet } from "./Pet";
 import { random } from "./utils";
 
 export class Player {
@@ -9,6 +10,7 @@ export class Player {
   critChance = 0.3;
   critDamage = 1.2;
   member: GuildMember;
+  pet?: Pet;
 
   constructor(member: GuildMember) {
     this.member = member;

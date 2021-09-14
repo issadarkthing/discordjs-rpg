@@ -76,6 +76,13 @@ export class Battle {
 
       const player = battleQueue.shift()!;
       const opponent = random().pick(battleQueue);
+
+      if (player.pet && player.pet.isIntercept()) {
+        const petEmbed = player.pet.intercept(opponent);
+        await message.edit({ embeds: [petEmbed] });
+        await sleep(4000);
+      }
+
       const battleEmbed = this.attack(player, opponent);
 
       for (const p1 of this.players) {

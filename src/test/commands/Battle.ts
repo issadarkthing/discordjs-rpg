@@ -1,6 +1,7 @@
 import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
 import { Battle } from "../../Battle";
+import { Pet } from "../../Pet";
 import { Player } from "../../Player";
 
 export default class BattleCommand extends Command {
@@ -16,6 +17,10 @@ export default class BattleCommand extends Command {
       return msg.channel.send("Please mention your opponent(s)");
 
     author.attack = 30;
+
+    const pet = new Pet("yenyen");
+    pet.owner = author;
+    author.pet = pet;
 
     const battle = new Battle(msg, [author, ...opponents]);
     await battle.run();
