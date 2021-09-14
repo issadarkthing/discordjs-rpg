@@ -5,16 +5,13 @@ import { Player } from "./Player";
 import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
 
 
-export class Pet {
-  name: string;
+export abstract class Pet {
+  abstract name: string;
+  abstract id: string;
   owner?: Player;
   imageUrl?: string;
   interceptRate = 0.05;
   attack = 5;
-
-  constructor(name: string) {
-    this.name = name;
-  }
 
   isIntercept() {
     return random().bool(this.interceptRate);
