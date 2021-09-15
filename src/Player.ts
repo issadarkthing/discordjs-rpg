@@ -1,6 +1,5 @@
 import { GuildMember } from "discord.js";
 import { Fighter } from "./Fighter";
-import { Pet } from "./Pet";
 
 export class Player extends Fighter {
   id: string;
@@ -10,7 +9,6 @@ export class Player extends Fighter {
   critChance = 0.3;
   critDamage = 1.2;
   member: GuildMember;
-  pet?: Pet;
 
   constructor(member: GuildMember) {
     super(member.displayName);

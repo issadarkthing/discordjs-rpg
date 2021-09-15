@@ -97,7 +97,7 @@ export class Battle {
         await sleep(this.interval);
       }
 
-      if (player instanceof Player && player.pet?.isIntercept()) {
+      if (player.pet?.isIntercept()) {
         const petEmbed = player.pet.intercept(opponent);
         await message.edit({ embeds: [petEmbed] });
         await sleep(this.interval);
