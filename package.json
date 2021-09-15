@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@jiman24/commandment": "^0.0.5",
-    "@types/common-tags": "^1.8.1"
+    "@types/common-tags": "^1.8.1",
+    "typescript": "^4.4.3"
   }
 }
