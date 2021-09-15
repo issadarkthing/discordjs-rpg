@@ -43,6 +43,10 @@ export class Fighter extends Base {
     const armor = formatPercent(this.armor);
     const critChance = formatPercent(this.critChance);
 
+    const armorList = this.equippedArmors
+      .map((x, i) => `${i + 1}. ${x.name}`)
+      .join("\n");
+
     const embed = new MessageEmbed()
       .setTitle("Profile")
       .setColor(GOLD)
@@ -52,6 +56,9 @@ export class Fighter extends Base {
       .addField("Armor", inlineCode(armor), true)
       .addField("Crit Chance", inlineCode(critChance), true)
       .addField("Crit Damage", inlineCode(`x${this.critDamage}`), true)
+      .addField("Skill", this.skill?.name || "none", true)
+      .addField("Pet", this.pet?.name || "none", true)
+      .addField("Armor", armorList || "none")
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);

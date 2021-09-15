@@ -1,6 +1,9 @@
 import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
+import { Chest } from "../../Armor";
+import { Dragon } from "../../Pet";
 import { Player } from "../../Player";
+import { Rage } from "../../Skill";
 
 
 export default class Profile extends Command {
@@ -10,6 +13,14 @@ export default class Profile extends Command {
   async exec(msg: Message, args: string[]) {
 
     const player = new Player(msg.member!);
+    player.skill = new Rage();
+
+    const pet = new Dragon();
+    pet.setOwner(player);
+
+    const chest = new Chest();
+    player.equipArmor(chest);
+    
     msg.channel.send({ embeds: [player.show()] });
   }
 }
