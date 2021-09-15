@@ -4,11 +4,13 @@ import { Armor } from "../../Armor";
 import { Battle } from "../../Battle";
 import { Pet } from "../../Pet";
 import { Player } from "../../Player";
+import { Rage } from "../../Skill";
 
 class Dragon extends Pet {
   name = "dragon";
   id = "dragon";
   attack = 20;
+  interceptRate = 0.4;
 }
 
 class Chest extends Armor {
@@ -29,7 +31,7 @@ export default class BattleCommand extends Command {
     if (!opponents)
       return msg.channel.send("Please mention your opponent(s)");
 
-    author.attack = 30;
+    author.skill = new Rage();
 
     const pet = new Dragon();
     pet.setOwner(author);

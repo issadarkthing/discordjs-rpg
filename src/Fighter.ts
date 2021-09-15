@@ -2,6 +2,7 @@ import { MessageEmbed } from "discord.js";
 import { Armor } from "./Armor";
 import { Base } from "./Base";
 import { deepCopy } from "./deepCopy";
+import { Skill } from "./Skill";
 import { formatPercent, GOLD, inlineCode, random } from "./utils";
 
 export class Fighter extends Base {
@@ -13,6 +14,7 @@ export class Fighter extends Base {
   critChance = 0.3;
   critDamage = 1.2;
   equippedArmors: Armor[] = [];
+  skill?: Skill;
   imageUrl?: string;
 
   constructor(name: string) {

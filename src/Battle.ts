@@ -82,6 +82,21 @@ export class Battle {
       const player = battleQueue.shift()!;
       const opponent = random().pick(battleQueue);
 
+      const playerSkillIntercept = player.skill?.intercept();
+      const opponentSkillIntercept = opponent.skill?.intercept();
+
+      if (playerSkillIntercept) {
+        const skillEmbed = player.skill!.use(player, opponent);
+        await message.edit({ embeds: [skillEmbed] });
+        await sleep(this.interval);
+      }
+
+      if (opponentSkillIntercept) {
+        const skillEmbed = opponent.skill!.use(opponent, player);
+        await message.edit({ embeds: [skillEmbed] });
+        await sleep(this.interval);
+      }
+
       if (player instanceof Player && player.pet?.isIntercept()) {
         const petEmbed = player.pet.intercept(opponent);
         await message.edit({ embeds: [petEmbed] });
@@ -105,6 +120,14 @@ export class Battle {
         battleQueue = battleQueue.filter(x => x.id !== opponent.id);
         await this.msg.channel.send(`${opponent.name} has died in the battle`);
       } 
+
+      if (playerSkillIntercept) {
+        player.skill!.close(player, opponent);
+      }
+
+      if (opponentSkillIntercept) {
+        opponent.skill!.close(opponent, player);
+      }
 
       // wait before next round
       if (battleQueue.length !== 1)
