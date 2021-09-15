@@ -1,6 +1,7 @@
 import { MessageEmbed } from "discord.js";
 import { Armor } from "./Armor";
 import { Base } from "./Base";
+import { deepCopy } from "./deepCopy";
 import { formatPercent, GOLD, inlineCode, random } from "./utils";
 
 export class Fighter extends Base {
@@ -31,8 +32,7 @@ export class Fighter extends Base {
 
   copy() {
     const source = new Fighter(this.name);
-    Object.assign(source, this);
-    return source;
+    return deepCopy(source) as Fighter;
   }
 
   show() {
