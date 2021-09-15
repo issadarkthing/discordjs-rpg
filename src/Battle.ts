@@ -1,7 +1,6 @@
 import { Message, MessageEmbed } from "discord.js";
 import { GOLD, random, RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
-import { Player } from "./Player";
 
 export class Battle {
   private round = 0;
