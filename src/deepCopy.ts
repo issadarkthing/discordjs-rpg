@@ -76,7 +76,7 @@ export function deepCopy(data: Object): Object | undefined {
             // For example if an object has a key value that is an array
             // Add this cloned key value to the copiedObject we created earlier
             //@ts-ignore
-            copiedObject[key] = deepClone(data[key]);
+            copiedObject[key] = deepCopy(data[key]);
         }
 
         // Return the deeply copied object
