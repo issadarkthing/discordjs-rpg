@@ -143,5 +143,7 @@ export class Battle {
       winEmbed.setThumbnail(winner.imageUrl)
 
     await message.edit({ embeds: [winEmbed] });
+
+    return this.fighters.find(x => x.id === winner.id)!;
   }
 }
