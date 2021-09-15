@@ -43,6 +43,8 @@ export abstract class Pet extends Base {
     const armorProtection = opponent.armor * this.attack;
     const damageDealt = this.attack - armorProtection;
 
+    opponent.hp -= damageDealt;
+
     const embed = new MessageEmbed()
       .setTitle("Pet Interception")
       .setColor(BROWN)
