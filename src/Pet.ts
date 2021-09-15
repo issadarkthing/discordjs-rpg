@@ -59,3 +59,10 @@ export abstract class Pet extends Base {
     return embed;
   }
 }
+
+export class Dragon extends Pet {
+  name = "dragon";
+  id = "dragon";
+  attack = 20;
+  interceptRate = 0.4;
+}

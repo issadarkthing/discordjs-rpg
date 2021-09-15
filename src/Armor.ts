@@ -23,3 +23,10 @@ export abstract class Armor extends Base {
     return embed;
   }
 }
+
+export class Chest extends Armor {
+  name = "chest";
+  id = "chest";
+  armor = 0.8;
+}
+

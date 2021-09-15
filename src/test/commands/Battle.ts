@@ -1,23 +1,11 @@
 import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
-import { Armor } from "../../Armor";
+import { Chest } from "../../Armor";
 import { Battle } from "../../Battle";
-import { Pet } from "../../Pet";
+import { Dragon } from "../../Pet";
 import { Player } from "../../Player";
 import { Rage } from "../../Skill";
 
-class Dragon extends Pet {
-  name = "dragon";
-  id = "dragon";
-  attack = 20;
-  interceptRate = 0.4;
-}
-
-class Chest extends Armor {
-  name = "chest";
-  id = "chest";
-  armor = 0.8;
-}
 
 export default class BattleCommand extends Command {
   name = "battle";
