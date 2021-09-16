@@ -15,7 +15,8 @@ export abstract class Armor extends Base {
     const embed = new MessageEmbed()
       .setTitle("Armor")
       .setColor(SILVER)
-      .addField("Armor", inlineCode(armorRate))
+      .addField("Name", this.name, true)
+      .addField("Armor", inlineCode(armorRate), true)
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);
