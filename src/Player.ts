@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
-import { deepCopy } from "./deepCopy";
+import cloneDeep from "lodash.clonedeep";
 import { Fighter } from "./Fighter";
 
 export class Player extends Fighter {
@@ -20,6 +20,6 @@ export class Player extends Fighter {
 
   copy() {
     const source = new Player(this.member);
-    return deepCopy(source) as Player;
+    return cloneDeep(source);
   }
 }
