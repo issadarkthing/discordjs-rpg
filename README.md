@@ -12,4 +12,7 @@ library is freely available to be used by anyone as it is MIT licensed.
 
 
 ### Documentation
-Soon to be added.
+discordjs-rpg documentation website -
+[here](https://discordjs-rpg.vercel.app/index.html)
+
+Examples - [here](./src/test/)
