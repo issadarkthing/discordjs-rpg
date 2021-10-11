@@ -2,6 +2,9 @@ import { Message, MessageEmbed } from "discord.js";
 import { GOLD, random, RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
 
+/** 
+ * Battle handles all battle simulation using discord.js's embed. 
+ * */
 export class Battle {
   private round = 0;
   private msg: Message;
@@ -9,6 +12,10 @@ export class Battle {
   /** Time interval to change to next frame */
   interval = 6000;
 
+  /** 
+   * @param {Message} msg - discord.js's Message object
+   * @param {Fighter[]} fighters - array of Fighter's object
+   * */
   constructor(msg: Message, fighters: Fighter[]) {
     this.msg = msg;
     this.fighters = [...new Set(fighters)];
@@ -67,6 +74,14 @@ export class Battle {
     return battleEmbed;
   }
 
+  /** 
+   * Starts the battle simulation. It will throw error if the array of
+   * Fighters is less than 2. This method will return the Fighter object who won
+   * the battle.
+   * 
+   * @returns Fighter
+   * 
+   * */
   async run() {
 
     if (this.fighters.length <= 1)

@@ -2,6 +2,10 @@ import { GuildMember } from "discord.js";
 import cloneDeep from "lodash.clonedeep";
 import { Fighter } from "./Fighter";
 
+/** 
+ * Player extends Fighter and it used to easily create Fighter class based on
+ * discord.js GuildMember.
+ * */
 export class Player extends Fighter {
   id: string;
   attack = 10;
@@ -11,6 +15,7 @@ export class Player extends Fighter {
   critDamage = 1.2;
   member: GuildMember;
 
+  /** Creates Player instance based off GuildMember */
   constructor(member: GuildMember) {
     super(member.displayName);
     this.member = member;

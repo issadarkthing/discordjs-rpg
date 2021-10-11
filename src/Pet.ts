@@ -6,21 +6,43 @@ import { Player } from "./Player";
 import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
 
 
+/** 
+ * Pet is a companion for Player which can be used in a battle. Pet will attack
+ * during battle based on it's own attribute. To add your own pet, extend Pet
+ * class and change the attributes to your liking.
+ *
+ * ```typescript
+ *
+ * export class Dragon extends Pet {
+ *   name = "dragon";
+ *   id = "dragon";
+ *   attack = 20;
+ *   interceptRate = 0.4;
+ * }
+ * ```
+ * */
 export abstract class Pet extends Base {
+  /** Pet's owner */
   owner?: Player;
+  /** Image to represent this Pet */
   imageUrl?: string;
+  /** Frequency to intercept and attack in battle in the form of percentage */
   interceptRate = 0.05;
+  /** Damage dealt when attack */
   attack = 5;
 
+  /** Returns true if intercept */
   isIntercept() {
     return random().bool(this.interceptRate);
   }
 
+  /** Sets the pet ownership */
   setOwner(player: Player) {
     player.pet = this;
     this.owner = player;
   }
 
+  /** MessageEmbed that represents Pet */
   show() {
     const interceptRate = formatPercent(this.interceptRate);
     const embed = new MessageEmbed()
@@ -36,6 +58,7 @@ export abstract class Pet extends Base {
     return embed;
   }
 
+  /** Action to take by Pet when in Battle */
   intercept(opponent: Fighter) {
 
     if (!this.owner) throw new Error("pet cannot attack without owner");
@@ -60,6 +83,7 @@ export abstract class Pet extends Base {
   }
 }
 
+/** Pet example */
 export class Dragon extends Pet {
   name = "dragon";
   id = "dragon";
