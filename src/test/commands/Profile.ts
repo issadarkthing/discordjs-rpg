@@ -12,7 +12,7 @@ export default class Profile extends Command {
 
   async exec(msg: Message, args: string[]) {
 
-    const player = new Player(msg.member!);
+    const player = new Player(msg.author);
     player.skill = new Rage();
 
     const pet = new Dragon();

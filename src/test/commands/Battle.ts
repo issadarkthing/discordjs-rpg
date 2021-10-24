@@ -13,8 +13,8 @@ export default class BattleCommand extends Command {
 
   async exec(msg: Message, args: string[]) {
 
-    const author = new Player(msg.member!);
-    const opponents = msg.mentions.members?.map(x => new Player(x));
+    const author = new Player(msg.author);
+    const opponents = msg.mentions.users.map(x => new Player(x));
 
     if (!opponents)
       return msg.channel.send("Please mention your opponent(s)");
