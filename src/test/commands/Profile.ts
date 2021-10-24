@@ -4,7 +4,7 @@ import { Chest } from "../../Armor";
 import { Dragon } from "../../Pet";
 import { Player } from "../../Player";
 import { Rage } from "../../Skill";
-
+import { Sword } from "../../Weapon";
 
 export default class Profile extends Command {
   name = "profile";
@@ -20,6 +20,9 @@ export default class Profile extends Command {
 
     const chest = new Chest();
     player.equipArmor(chest);
+
+    const sword = new Sword();
+    player.equipWeapon(sword);
     
     msg.channel.send({ embeds: [player.show()] });
   }

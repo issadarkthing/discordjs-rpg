@@ -4,6 +4,7 @@ import { Base } from "./Base";
 import { Pet } from "./Pet";
 import { Skill } from "./Skill";
 import { formatPercent, GOLD, inlineCode, random } from "./utils";
+import { Weapon } from "./Weapon";
 
 /** 
  * Fighter is base class to be used in Battle. Only class derived from Fighter
@@ -33,6 +34,7 @@ export class Fighter extends Base {
   /** Critical attack percentage increment */
   critDamage = 1.2;
   private equippedArmors: Armor[] = [];
+  private equippedWeapons: Weapon[] = [];
   /** Fighter's Skill */
   skill?: Skill;
   /** Fighter's Pet */
@@ -52,6 +54,12 @@ export class Fighter extends Base {
     this.equippedArmors.push(armor);
   }
 
+  /** Add new weapon to the user */
+  equipWeapon(weapon: Weapon) {
+    this.attack += weapon.attack;
+    this.equippedWeapons.push(weapon);
+  }
+
   /** Returns true if critical attack */
   isCrit() {
     return random().bool(this.critChance);
@@ -66,6 +74,10 @@ export class Fighter extends Base {
       .map((x, i) => `${i + 1}. ${x.name}`)
       .join("\n");
 
+    const weaponList = this.equippedWeapons
+      .map((x, i) => `${i + 1}. ${x.name}`)
+      .join("\n");
+
     const embed = new MessageEmbed()
       .setTitle("Profile")
       .setColor(GOLD)
@@ -76,8 +88,9 @@ export class Fighter extends Base {
       .addField("Crit Chance", inlineCode(critChance), true)
       .addField("Crit Damage", inlineCode(`x${this.critDamage.toFixed(1)}`), true)
       .addField("Skill", this.skill?.name || "none", true)
-      .addField("Pet", this.pet?.name || "none", true)
-      .addField("Armor", armorList || "none")
+      .addField("Pet", this.pet?.name || "none")
+      .addField("Armors", armorList || "none", true)
+      .addField("Weapons", weaponList || "none", true)
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);
