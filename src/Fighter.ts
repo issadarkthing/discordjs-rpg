@@ -1,7 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import { Armor } from "./Armor";
 import { Base } from "./Base";
-import cloneDeep from "lodash.clonedeep";
 import { Pet } from "./Pet";
 import { Skill } from "./Skill";
 import { formatPercent, GOLD, inlineCode, random } from "./utils";
@@ -56,12 +55,6 @@ export class Fighter extends Base {
   /** Returns true if critical attack */
   isCrit() {
     return random().bool(this.critChance);
-  }
-
-  /** To be used internally */
-  copy() {
-    const source = new Fighter(this.name);
-    return cloneDeep(source);
   }
 
   /** MessageEmbed that represents this Fighter */

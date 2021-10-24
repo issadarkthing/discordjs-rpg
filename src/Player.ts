@@ -1,5 +1,4 @@
 import { User } from "discord.js";
-import cloneDeep from "lodash.clonedeep";
 import { Fighter } from "./Fighter";
 
 /** 
@@ -21,10 +20,5 @@ export class Player extends Fighter {
     this.user = user;
     this.id = user.id;
     this.imageUrl = this.user.displayAvatarURL();
-  }
-
-  copy() {
-    const source = new Player(this.user);
-    return cloneDeep(source);
   }
 }

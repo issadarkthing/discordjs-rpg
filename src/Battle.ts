@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from "discord.js";
 import { GOLD, random, RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
+import cloneDeep from "lodash.clonedeep";
 
 /** 
  * Battle handles all battle simulation using discord.js's embed. 
@@ -87,7 +88,7 @@ export class Battle {
     if (this.fighters.length <= 1)
       throw new Error("cannot battle with 1 or less player");
 
-    let battleQueue = this.fighters.map(x => x.copy());
+    let battleQueue = this.fighters.map(x => cloneDeep(x));
     const message = await this.msg.channel.send("Starting battle");
 
     while (battleQueue.length !== 1) {
