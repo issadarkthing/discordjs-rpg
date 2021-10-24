@@ -16,7 +16,7 @@ export default class BattleCommand extends Command {
     const author = new Player(msg.author);
     const opponents = msg.mentions.users.map(x => new Player(x));
 
-    if (!opponents)
+    if (opponents.length === 0)
       return msg.channel.send("Please mention your opponent(s)");
 
     author.skill = new Rage();
