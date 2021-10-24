@@ -1,8 +1,11 @@
 import { Client } from "discord.js";
 import { CommandManager } from "@jiman24/commandment";
 import path from "path";
+import { config } from "dotenv";
 
-const COMMAND_PREFIX = "!";
+config();
+
+const COMMAND_PREFIX = "-";
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 const commandManager = new CommandManager(COMMAND_PREFIX);
 
