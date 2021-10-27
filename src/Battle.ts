@@ -2,6 +2,7 @@ import { Message, MessageEmbed } from "discord.js";
 import { GOLD, random, RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
 import cloneDeep from "lodash.clonedeep";
+import { pick } from "random-js";
 
 /** 
  * Battle handles all battle simulation using discord.js's embed. 
@@ -10,6 +11,7 @@ export class Battle {
   private round = 0;
   private msg: Message;
   private fighters: Fighter[];
+  private boss?: Fighter;
   /** Time interval to change to next frame */
   interval = 6000;
 
@@ -76,6 +78,27 @@ export class Battle {
   }
 
   /** 
+   * Change the battle to raid mode. Raid mode only have one opponent that is
+   * the boss. If the boss dies, the battle ends.
+   *
+   * @param {Fighter} - Boss to be defeated
+   * */
+  setBoss(boss: Fighter) {
+    this.boss = boss;
+    return this;
+  }
+
+  /** 
+   * Sets the battle scene interval.
+   *
+   * @param {number} - time in milliseconds 
+   * */
+  setInterval(ms: number) {
+    this.interval = ms;
+    return this;
+  }
+
+  /** 
    * Starts the battle simulation. It will throw error if the array of
    * Fighters is less than 2. This method will return the Fighter object who won
    * the battle.
@@ -95,7 +118,17 @@ export class Battle {
       this.round++;
 
       const player = battleQueue.shift()!;
-      const opponent = random().pick(battleQueue);
+      let opponent = random().pick(battleQueue);
+
+      const boss = this.boss;
+      if (boss && player.id !== boss.id) {
+        const bossState = battleQueue.find(x => x.id === boss.id);
+        if (bossState) {
+          opponent = bossState;
+        } else {
+          break;
+        }
+      }
 
       const playerSkillIntercept = player.skill?.intercept();
       const opponentSkillIntercept = opponent.skill?.intercept();
@@ -150,16 +183,31 @@ export class Battle {
     }
 
     const winner = battleQueue[0];
+
+    const boss = this.boss;
+    // if the boss loses
+    if (boss && winner.id !== boss.id) {
+      const winEmbed = new MessageEmbed()
+        .setColor(GOLD)
+        .setTitle("Raid Successfull")
+        .setDescription(`${boss.name} has been defeated!`);
+
+      if (boss.imageUrl)
+        winEmbed.setThumbnail(boss.imageUrl);
+
+      await message.edit({ embeds: [winEmbed] });
+      return this.fighters.find(x => x.id === winner.id)!;
+    }
+
     const winEmbed = new MessageEmbed()
       .setColor(GOLD)
       .setTitle("Battle Winner")
       .setDescription(`${winner.name} has won the battle!`);
 
     if (winner.imageUrl)
-      winEmbed.setThumbnail(winner.imageUrl)
+      winEmbed.setThumbnail(winner.imageUrl);
 
     await message.edit({ embeds: [winEmbed] });
-
     return this.fighters.find(x => x.id === winner.id)!;
   }
 }

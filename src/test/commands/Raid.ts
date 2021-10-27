@@ -5,19 +5,24 @@ import { Battle } from "../../Battle";
 import { Dragon } from "../../Pet";
 import { Player } from "../../Player";
 import { Rage } from "../../Skill";
+import { Fighter } from "../../Fighter";
 
-
-export default class BattleCommand extends Command {
-  name = "battle";
-  aliases = ["b"];
+export default class extends Command {
+  name = "raid";
 
   async exec(msg: Message, args: string[]) {
 
     const author = new Player(msg.author);
-    const opponents = msg.mentions.users.map(x => new Player(x));
+    const bots = [
+      new Fighter("Michael"),
+      new Fighter("Mansion"),
+      new Fighter("John"),
+    ];
 
-    if (opponents.length === 0)
-      return msg.channel.send("Please mention your opponent(s)");
+    const boss = new Fighter("Boogey Man");
+    boss.hp = 1000;
+    boss.attack = 50;
+    boss.critChance = 0.4;
 
     author.skill = new Rage();
 
@@ -27,7 +32,9 @@ export default class BattleCommand extends Command {
     const chest = new Chest();
     author.equipArmor(chest);
 
-    const battle = new Battle(msg, [author, ...opponents]);
+    const battle = new Battle(msg, [author, boss, ...bots]);
+
+    battle.setBoss(boss);
 
     await battle.run();
   }
