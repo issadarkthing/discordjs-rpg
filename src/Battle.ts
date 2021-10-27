@@ -2,7 +2,6 @@ import { Message, MessageEmbed } from "discord.js";
 import { GOLD, random, RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
 import cloneDeep from "lodash.clonedeep";
-import { pick } from "random-js";
 
 /** 
  * Battle handles all battle simulation using discord.js's embed. 
@@ -118,7 +117,7 @@ export class Battle {
       this.round++;
 
       const player = battleQueue.shift()!;
-      let opponent = random().pick(battleQueue);
+      let opponent = random.pick(battleQueue);
 
       const boss = this.boss;
       if (boss && player.id !== boss.id) {

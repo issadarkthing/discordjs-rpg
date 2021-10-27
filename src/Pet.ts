@@ -33,7 +33,7 @@ export abstract class Pet extends Base {
 
   /** Returns true if intercept */
   isIntercept() {
-    return random().bool(this.interceptRate);
+    return random.bool(this.interceptRate);
   }
 
   /** Sets the pet ownership */

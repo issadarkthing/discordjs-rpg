@@ -63,7 +63,7 @@ export abstract class Skill extends Base {
 
   /** Returns true if skill is activated */
   intercept() {
-    return random().bool(this.interceptRate);
+    return random.bool(this.interceptRate);
   }
 
   /** MessageEmbed that represents Skill */

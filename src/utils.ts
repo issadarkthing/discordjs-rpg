@@ -12,7 +12,7 @@ export function sleep(time: number) {
   })
 }
 
-export const random = () => new Random(MersenneTwister19937.autoSeed());
+export const random = new Random(MersenneTwister19937.autoSeed());
 
 export function formatPercent(num: number) {
   return `${(num * 100).toFixed(2)}%`

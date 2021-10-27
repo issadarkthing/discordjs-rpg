@@ -62,7 +62,7 @@ export class Fighter extends Base {
 
   /** Returns true if critical attack */
   isCrit() {
-    return random().bool(this.critChance);
+    return random.bool(this.critChance);
   }
 
   /** MessageEmbed that represents this Fighter */
