@@ -110,7 +110,7 @@ export class Battle {
     if (this.fighters.length <= 1)
       throw new Error("cannot battle with 1 or less player");
 
-    let battleQueue = this.fighters.map(x => cloneDeep(x));
+    const battleQueue = this.fighters.map(x => cloneDeep(x));
     const message = await this.msg.channel.send("Starting battle");
 
     while (battleQueue.length !== 1) {
@@ -164,8 +164,11 @@ export class Battle {
       battleQueue.push(player);
 
       if (opponent.hp <= 0) {
-        battleQueue = battleQueue.filter(x => x.id !== opponent.id);
-        await this.msg.channel.send(`${opponent.name} has died in the battle`);
+        const index = battleQueue.findIndex(x => x.id === opponent.id);
+        battleQueue.splice(index, 1);
+        this.msg.channel.send(`${opponent.name} has died in the battle`);
+
+        if (battleQueue.length === 1) break;
       } 
 
       if (playerSkillIntercept) {
@@ -176,9 +179,7 @@ export class Battle {
         opponent.skill!.close(opponent, player);
       }
 
-      // wait before next round
-      if (battleQueue.length !== 1)
-        await sleep(this.interval);
+      await sleep(this.interval);
     }
 
     const winner = battleQueue[0];
@@ -206,7 +207,7 @@ export class Battle {
     if (winner.imageUrl)
       winEmbed.setThumbnail(winner.imageUrl);
 
-    await message.edit({ embeds: [winEmbed] });
+    message.edit({ embeds: [winEmbed] });
     return this.fighters.find(x => x.id === winner.id)!;
   }
 }
