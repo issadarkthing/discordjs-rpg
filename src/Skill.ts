@@ -3,7 +3,7 @@ import { MessageEmbed } from "discord.js";
 import { Base } from "./Base";
 import { Fighter } from "./Fighter";
 import { Player } from "./Player";
-import { GREEN, inlineCode, random } from "./utils";
+import { formatPercent, GREEN, inlineCode, random } from "./utils";
 
 
 /** 
@@ -68,10 +68,12 @@ export abstract class Skill extends Base {
 
   /** MessageEmbed that represents Skill */
   show() {
+    const interceptRate = formatPercent(this.interceptRate);
     const embed = new MessageEmbed()
       .setTitle("Skill")
       .setColor(GREEN)
       .addField("Name", this.name)
+      .addField("Intercept Rate", inlineCode(interceptRate),true)
       .addField("Description", this.description)
 
     if (this.imageUrl)
