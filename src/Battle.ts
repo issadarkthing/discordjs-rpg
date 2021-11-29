@@ -57,7 +57,7 @@ export class Battle {
     const attackRate = isCrit ? p1.attack * p1.critDamage : p1.attack;
     const armorProtection = p2.armor * attackRate;
     const damageDealt = attackRate - armorProtection;
-    const critText = isCrit ? ` (x${p1.critDamage.toFixed(1)})` : "";
+    const critText = isCrit ? ` (x${p1.critDamage.toFixed(1)}) 🔥` : "";
 
     p2.hp -= damageDealt;
 
