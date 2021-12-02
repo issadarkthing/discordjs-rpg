@@ -11,7 +11,7 @@ export class Battle {
   private msg: Message;
   private fighters: Fighter[];
   private boss?: Fighter;
-  /** Time interval to change to next frame */
+  /** Time interval to change to next frame (in milliseconds by default is 6000) */
   interval = 6000;
 
   /** 
