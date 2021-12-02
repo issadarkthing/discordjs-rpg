@@ -33,8 +33,10 @@ export class Fighter extends Base {
   critChance = 0.3;
   /** Critical attack percentage increment */
   critDamage = 1.2;
-  private equippedArmors: Armor[] = [];
-  private equippedWeapons: Weapon[] = [];
+  /** Array of equipped armors */
+  equippedArmors: Armor[] = [];
+  /** Array of equipped weapons */
+  equippedWeapons: Weapon[] = [];
   /** Fighter's Skill */
   skill?: Skill;
   /** Fighter's Pet */
