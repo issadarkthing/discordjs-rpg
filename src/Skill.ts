@@ -49,8 +49,6 @@ export abstract class Skill extends Base {
   interceptRate = 0.2;
   /** Image to represent this skill */
   imageUrl?: string;
-  /** Skill's owner */
-  owner?: Player;
 
   /** 
    * Mutates fighter's attributes during battle
