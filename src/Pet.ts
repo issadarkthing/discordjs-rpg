@@ -72,7 +72,7 @@ export abstract class Pet extends Base {
       .setColor(BROWN)
       .setDescription(
         oneLine`${this.owner.name}'s ${this.name} attacks ${opponent.name} for
-        ${bold(damageDealt)} damage!`
+        ${bold(Math.round(damageDealt))} damage!`
       );
 
     if (this.imageUrl) 
