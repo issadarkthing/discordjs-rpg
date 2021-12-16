@@ -2,7 +2,6 @@ import { oneLine } from "common-tags";
 import { MessageEmbed } from "discord.js";
 import { Base } from "./Base";
 import { Fighter } from "./Fighter";
-import { Player } from "./Player";
 import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
 
 
@@ -23,7 +22,7 @@ import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
  * */
 export abstract class Pet extends Base {
   /** Pet's owner */
-  owner?: Player;
+  owner?: Fighter;
   /** Image to represent this Pet */
   imageUrl?: string;
   /** Frequency to intercept and attack in battle in the form of percentage */
@@ -37,7 +36,7 @@ export abstract class Pet extends Base {
   }
 
   /** Sets the pet ownership */
-  setOwner(player: Player) {
+  setOwner(player: Fighter) {
     player.pet = this;
     this.owner = player;
   }

@@ -2,7 +2,6 @@ import { oneLine } from "common-tags";
 import { MessageEmbed } from "discord.js";
 import { Base } from "./Base";
 import { Fighter } from "./Fighter";
-import { Player } from "./Player";
 import { formatPercent, GREEN, inlineCode, random } from "./utils";
 
 
@@ -62,6 +61,11 @@ export abstract class Skill extends Base {
   /** Returns true if skill is activated */
   intercept() {
     return random.bool(this.interceptRate);
+  }
+
+  /** Sets the skill to player */
+  setOwner(player: Fighter) {
+    player.skill = this;
   }
 
   /** MessageEmbed that represents Skill */
