@@ -3,7 +3,14 @@ import { Armor } from "./Armor";
 import { Base } from "./Base";
 import { Pet } from "./Pet";
 import { Skill } from "./Skill";
-import { formatPercent, GOLD, inlineCode, random } from "./utils";
+import { 
+  DOWN_TRIANGLE, 
+  formatPercent, 
+  GOLD, 
+  inlineCode, 
+  random, 
+  UP_TRIANGLE,
+} from "./utils";
 import { Weapon } from "./Weapon";
 
 /** 
@@ -67,8 +74,11 @@ export class Fighter extends Base {
     return random.bool(this.critChance);
   }
 
-  /** MessageEmbed that represents this Fighter */
-  show() {
+  /** 
+   * MessageEmbed that represents this Fighter. Passing another Fighter in this
+   * method will make comparison between this Fighter stat with the other 
+   * */
+  show(fighter?: Fighter) {
     const armor = formatPercent(this.armor);
     const critChance = formatPercent(this.critChance);
 
@@ -96,6 +106,66 @@ export class Fighter extends Base {
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);
+
+    if (fighter) {
+
+      const fields1  = ["attack", "hp"] as const;
+      let i = 1;
+
+      for (const field of fields1) {
+
+        const monsterStat = this[field];
+        const playerStat = fighter[field];
+        let stat = monsterStat.toString();
+
+        if (playerStat > monsterStat) {
+          stat += ` ${UP_TRIANGLE}`;
+        } else if (monsterStat > playerStat) {
+          stat += ` ${DOWN_TRIANGLE}`;
+        }
+
+        embed.fields[i].value = inlineCode(stat);
+
+        i++;
+      }
+
+      const fields2 = ["armor", "critChance"] as const;
+      for (const field of fields2) {
+
+        const monsterStat = this[field];
+        const playerStat = fighter[field];
+        let stat = formatPercent(monsterStat);
+
+        if (playerStat > monsterStat) {
+          stat += ` ${UP_TRIANGLE}`;
+        } else if (monsterStat > playerStat) {
+          stat += ` ${DOWN_TRIANGLE}`;
+        }
+
+        embed.fields[i].value = inlineCode(stat);
+
+        i++;
+      }
+
+
+      const fields3 = ["critDamage"] as const;
+      for (const field of fields3) {
+
+        const monsterStat = this[field];
+        const playerStat = fighter[field];
+        let stat = `x${monsterStat.toFixed(1)}`;
+
+        if (playerStat > monsterStat) {
+          stat += ` ${UP_TRIANGLE}`;
+        } else if (monsterStat > playerStat) {
+          stat += ` ${DOWN_TRIANGLE}`;
+        }
+
+        embed.fields[i].value = inlineCode(stat);
+
+        i++;
+      }
+    }
 
     return embed;
   }
