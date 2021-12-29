@@ -4,12 +4,12 @@ import { Base } from "./Base";
 import { Pet } from "./Pet";
 import { Skill } from "./Skill";
 import { 
-  DOWN_TRIANGLE, 
+  RED_CIRCLE, 
   formatPercent, 
   GOLD, 
   inlineCode, 
   random, 
-  UP_TRIANGLE,
+  GREEN_CIRLE,
 } from "./utils";
 import { Weapon } from "./Weapon";
 
@@ -119,9 +119,9 @@ export class Fighter extends Base {
         let stat = monsterStat.toString();
 
         if (playerStat > monsterStat) {
-          stat += ` ${UP_TRIANGLE}`;
+          stat += ` ${GREEN_CIRLE}`;
         } else if (monsterStat > playerStat) {
-          stat += ` ${DOWN_TRIANGLE}`;
+          stat += ` ${RED_CIRCLE}`;
         }
 
         embed.fields[i].value = inlineCode(stat);
@@ -137,9 +137,9 @@ export class Fighter extends Base {
         let stat = formatPercent(monsterStat);
 
         if (playerStat > monsterStat) {
-          stat += ` ${UP_TRIANGLE}`;
+          stat += ` ${GREEN_CIRLE}`;
         } else if (monsterStat > playerStat) {
-          stat += ` ${DOWN_TRIANGLE}`;
+          stat += ` ${RED_CIRCLE}`;
         }
 
         embed.fields[i].value = inlineCode(stat);
@@ -156,9 +156,9 @@ export class Fighter extends Base {
         let stat = `x${monsterStat.toFixed(1)}`;
 
         if (playerStat > monsterStat) {
-          stat += ` ${UP_TRIANGLE}`;
+          stat += ` ${GREEN_CIRLE}`;
         } else if (monsterStat > playerStat) {
-          stat += ` ${DOWN_TRIANGLE}`;
+          stat += ` ${RED_CIRCLE}`;
         }
 
         embed.fields[i].value = inlineCode(stat);
