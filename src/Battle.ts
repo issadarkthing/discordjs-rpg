@@ -11,7 +11,7 @@ export class Battle {
   private msg: Message;
   private fighters: Fighter[];
   private boss?: Fighter;
-  private playerDiedText: string | null = null;
+  private playerDiedText?: (fighter: Fighter) => string;
   /** Time interval to change to next frame (in milliseconds by default is 6000) */
   interval = 6000;
 
@@ -80,7 +80,7 @@ export class Battle {
   /** 
    * Changes the discord.js message sent when player dies in the battle.
    * */
-  setPlayerDeadText(text: string) {
+  setPlayerDeadText(text: (fighter: Fighter) => string) {
     this.playerDiedText = text; 
   }
 
@@ -175,7 +175,11 @@ export class Battle {
         const index = battleQueue.findIndex(x => x.id === opponent.id);
         battleQueue.splice(index, 1);
 
-        const text = this.playerDiedText || `${opponent.name} has died in the battle`;
+        let text = `${opponent.name} has died in the battle`;
+        if (this.playerDiedText) {
+          text = this.playerDiedText(opponent);
+        }
+
         this.msg.channel.send(text);
 
         if (battleQueue.length === 1) break;
