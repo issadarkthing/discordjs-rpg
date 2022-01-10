@@ -1,5 +1,5 @@
 {
-  "name": "discordjs-rpg",
+  "name": "@jiman24/discordjs-rpg",
   "version": "2.3.6",
   "description": "discord rpg framework",
   "main": "dist/index.js",
