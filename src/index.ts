@@ -5,3 +5,4 @@ export { Pet } from "./Pet";
 export { Player } from "./Player";
 export { Skill } from "./Skill";
 export { Weapon } from "./Weapon";
+export { TeamBattle } from "./TeamBatle";
