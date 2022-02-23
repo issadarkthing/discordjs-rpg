@@ -128,7 +128,7 @@ export class TeamBattle extends BaseBattle {
     const winEmbed = new MessageEmbed()
       .setColor(GOLD)
       .setTitle("Battle Winner")
-      .setDescription(`Team ${winner.name} has won the battle!`);
+      .setDescription(`${winner.name} has won the battle!`);
 
 
     message.edit({ embeds: [winEmbed] });
