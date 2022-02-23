@@ -9,12 +9,12 @@ export default class extends Command {
   async exec(msg: Message) {
 
     const teamA = { 
-      name: "A", 
+      name: "Jaegerist", 
       fighters: [new Fighter("eren"), new Fighter("mikasa")],
     }
 
     const teamB = {
-      name: "B",
+      name: "Anti-Jaegerist",
       fighters: [new Fighter("jean"), new Fighter("annie")],
     }
 

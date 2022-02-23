@@ -43,6 +43,7 @@ export class TeamBattle extends BaseBattle {
       throw new Error("cannot battle with 1 or less player");
 
     const message = await this.msg.channel.send("Starting battle");
+    const teamAlength = this.teamA.fighters.length;
     const fighters = [...this.teamA.fighters, ...this.teamB.fighters];
 
     while (this.teamA.fighters.length !== 0 && this.teamB.fighters.length !== 0) {
@@ -76,10 +77,18 @@ export class TeamBattle extends BaseBattle {
       }
 
       const battleEmbed = this.attack(player, opponent);
-      battleEmbed.setTitle(`Team ${attackTeam.name} is attacking`);
+      battleEmbed.setTitle(`${attackTeam.name} is attacking`);
 
-      for (const p1 of this.fighters) {
+      for (let i = 0; i < this.fighters.length; i++) {
+        const p1 = this.fighters[i];
         const currHealth = fighters.find(x => x.id === p1.id)?.hp;
+
+        if (i === 0) {
+          battleEmbed.addField("\u200b", `**${this.teamA.name}**`);
+        } else if (i === teamAlength) {
+          battleEmbed.addField("\u200b", `**${this.teamB.name}**`);
+        }
+
         if (currHealth !== undefined) {
           this.progressBar(battleEmbed, p1.name, currHealth, p1.hp);
         }
