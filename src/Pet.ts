@@ -21,8 +21,8 @@ import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
  * ```
  * */
 export abstract class Pet extends Base {
-  /** Pet's owner */
-  owner?: Fighter;
+  /** Pet's owner name */
+  ownerName: string = "";
   /** Image to represent this Pet */
   imageUrl?: string;
   /** Frequency to intercept and attack in battle in the form of percentage */
@@ -38,7 +38,7 @@ export abstract class Pet extends Base {
   /** Sets the pet ownership */
   setOwner(player: Fighter) {
     player.pet = this;
-    this.owner = player;
+    this.ownerName = player.name;
   }
 
   /** MessageEmbed that represents Pet */
@@ -60,8 +60,6 @@ export abstract class Pet extends Base {
   /** Action to take by Pet when in Battle */
   intercept(opponent: Fighter) {
 
-    if (!this.owner) throw new Error("pet cannot attack without owner");
-
     const armorProtection = opponent.armor * this.attack;
     const damageDealt = this.attack - armorProtection;
 
@@ -71,7 +69,7 @@ export abstract class Pet extends Base {
       .setTitle("Pet Interception")
       .setColor(BROWN)
       .setDescription(
-        oneLine`${this.owner.name}'s ${this.name} attacks ${opponent.name} for
+        oneLine`${this.ownerName}'s ${this.name} attacks ${opponent.name} for
         ${bold(Math.round(damageDealt))} damage!`
       );
 
