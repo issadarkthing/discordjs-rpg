@@ -9,6 +9,8 @@ import { BaseBattle } from "./BaseBattle";
  * */
 export class Battle extends BaseBattle {
   protected boss?: Fighter;
+  onFighterDead?: (fighter: Fighter) => void;
+
   /** Time interval to change to next frame (in milliseconds by default is 6000) */
   interval = 4000;
 
@@ -23,6 +25,12 @@ export class Battle extends BaseBattle {
     return this;
   }
 
+  /** 
+   * Executes callback when Fighter dead during battle.
+   * */
+  setOnFighterDead(cb: (fighter: Fighter) => void) {
+    this.onFighterDead = cb;
+  }
 
   /** 
    * Starts the battle simulation. It will throw error if the array of
@@ -99,6 +107,7 @@ export class Battle extends BaseBattle {
           text = this.playerDiedText(opponent);
         }
 
+        this.onFighterDead && this.onFighterDead(opponent);
         this.msg.channel.send(text);
 
         if (battleQueue.length === 1) break;
