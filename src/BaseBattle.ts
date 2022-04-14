@@ -6,6 +6,7 @@ export abstract class BaseBattle {
   protected round = 0;
   protected msg: Message;
   protected fighters: Fighter[];
+  protected damageDealt: Map<string, number> = new Map();
   protected playerDiedText?: (fighter: Fighter) => string;
   /** Time interval to change to next frame (in milliseconds by default is 6000) */
   interval = 4000;
@@ -67,9 +68,20 @@ export abstract class BaseBattle {
       .addField("Damage Done", `\`${Math.round(damageDealt)}\``, true);
 
     if (p1.imageUrl)
-      battleEmbed.setThumbnail(p1.imageUrl)
+      battleEmbed.setThumbnail(p1.imageUrl);
+
+    const totalDamageDealt = this.damageDealt.get(p1.id) || 0;
+
+    this.damageDealt.set(p1.id, totalDamageDealt + damageDealt);
 
     return battleEmbed;
+  }
+
+  /** 
+   * Gets total damage dealt for a particular fighter
+   * */
+  getDamageDealt(id: string) {
+    return this.damageDealt.get(id);
   }
 
   /** 
