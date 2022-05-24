@@ -94,7 +94,7 @@ export abstract class BaseBattle {
   /** 
    * Sets the battle scene interval.
    *
-   * @param {number} - time in milliseconds 
+   * @param ms {number} - time in milliseconds 
    * */
   setInterval(ms: number) {
     this.interval = ms;

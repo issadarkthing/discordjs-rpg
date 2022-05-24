@@ -18,7 +18,7 @@ export class Battle extends BaseBattle {
    * Change the battle to raid mode. Raid mode only have one opponent that is
    * the boss. If the boss dies, the battle ends.
    *
-   * @param {Fighter} - Boss to be defeated
+   * @param boss {Fighter} - Boss to be defeated
    * */
   setBoss(boss: Fighter) {
     this.boss = boss;
