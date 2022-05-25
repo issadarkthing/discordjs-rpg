@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from "discord.js";
-import { RED } from "./utils";
+import { RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
 
 export abstract class BaseBattle {
@@ -11,6 +11,12 @@ export abstract class BaseBattle {
   /** Time interval to change to next frame (in milliseconds by default is 6000) */
   interval = 4000;
 
+  /** Show battle embed */
+  showBattle = true;
+
+  /** Logs battle to stdout */
+  logBattle = false;
+
   /** 
    * @param {Message} msg - discord.js's Message object
    * @param {Fighter[]} fighters - array of Fighter's object
@@ -18,6 +24,10 @@ export abstract class BaseBattle {
   constructor(msg: Message, fighters: Fighter[]) {
     this.msg = msg;
     this.fighters = [...new Set(fighters)];
+  }
+
+  protected sleep() {
+    return sleep(this.interval);
   }
 
   private bar(progress: number, maxProgress: number) {
@@ -99,5 +109,32 @@ export abstract class BaseBattle {
   setInterval(ms: number) {
     this.interval = ms;
     return this;
+  }
+
+  private getEmbedInfo(embed: MessageEmbed) {
+
+    let result = embed.description ? `\nDescription: ${embed.description}` : "";
+
+    for (const field of embed.fields) {
+      result += `\n${field.name}: ${field.value}`;
+    }
+
+    return result;
+  }
+
+  /** 
+   * Updates embed and log if enabled.
+   * */
+  async updateEmbed(msg: Message, embed: MessageEmbed) {
+    this.logBattle && console.log(this.getEmbedInfo(embed));
+    this.showBattle && await msg.edit({ embeds: [embed] });
+  }
+
+  /** 
+   * Sends embed and log if enabled.
+   * */
+  async sendEmbed(embed: MessageEmbed) {
+    this.logBattle && console.log(this.getEmbedInfo(embed));
+    this.showBattle && await this.msg.channel.send({ embeds: [embed] });
   }
 }

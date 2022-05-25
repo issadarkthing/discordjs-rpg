@@ -60,20 +60,23 @@ export class TeamBattle extends BaseBattle {
 
       if (playerSkillIntercept) {
         const skillEmbed = player.skill!.use(player, opponent);
-        await message.edit({ embeds: [skillEmbed] });
-        await sleep(this.interval);
+
+        await this.updateEmbed(message, skillEmbed);
+        this.showBattle && await this.sleep();
       }
 
       if (opponentSkillIntercept) {
         const skillEmbed = opponent.skill!.use(opponent, player);
-        await message.edit({ embeds: [skillEmbed] });
-        await sleep(this.interval);
+
+        await this.updateEmbed(message, skillEmbed);
+        this.showBattle && await this.sleep();
       }
 
       if (player.pet?.isIntercept()) {
         const petEmbed = player.pet.intercept(opponent);
-        await message.edit({ embeds: [petEmbed] });
-        await sleep(this.interval);
+
+        await this.updateEmbed(message, petEmbed);
+        this.showBattle && await this.sleep();
       }
 
       const battleEmbed = this.attack(player, opponent);
@@ -94,7 +97,7 @@ export class TeamBattle extends BaseBattle {
         }
       }
 
-      await message.edit({ embeds: [battleEmbed] });
+      await this.updateEmbed(message, battleEmbed);
 
       attackTeam.fighters.push(player);
 
@@ -108,6 +111,7 @@ export class TeamBattle extends BaseBattle {
         }
 
         this.msg.channel.send(text);
+        this.logBattle && console.log(text);
 
         if (defendTeam.fighters.length === 0) break;
       } 
@@ -120,7 +124,7 @@ export class TeamBattle extends BaseBattle {
         opponent.skill!.close(opponent, player);
       }
 
-      await sleep(this.interval);
+      this.showBattle && await this.sleep();
     }
 
     const winner = this.teamA.fighters.length > 0 ? this.teamA : this.teamB;

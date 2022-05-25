@@ -29,6 +29,9 @@ export default class BattleCommand extends Command {
 
     const battle = new Battle(msg, [author, ...opponents]);
 
+    battle.showBattle = false;
+    battle.logBattle = true;
+
     await battle.run();
   }
 }

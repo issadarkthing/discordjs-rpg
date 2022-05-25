@@ -69,33 +69,39 @@ export class Battle extends BaseBattle {
 
       if (playerSkillIntercept) {
         const skillEmbed = player.skill!.use(player, opponent);
-        await message.edit({ embeds: [skillEmbed] });
-        await sleep(this.interval);
+
+        await this.updateEmbed(message, skillEmbed);
+        this.showBattle && await this.sleep();
       }
 
       if (opponentSkillIntercept) {
         const skillEmbed = opponent.skill!.use(opponent, player);
-        await message.edit({ embeds: [skillEmbed] });
-        await sleep(this.interval);
+
+        await this.updateEmbed(message, skillEmbed);
+        this.showBattle && await this.sleep();
       }
 
       if (player.pet?.isIntercept()) {
         const petEmbed = player.pet.intercept(opponent);
-        await message.edit({ embeds: [petEmbed] });
-        await sleep(this.interval);
+        
+        await this.updateEmbed(message, petEmbed);
+        this.showBattle && await this.sleep();
       }
 
       const battleEmbed = this.attack(player, opponent);
 
-      for (const p1 of this.fighters) {
-        const currHealth = [player, ...battleQueue].find(x => x.id === p1.id)?.hp;
-        if (currHealth !== undefined) {
-          this.progressBar(battleEmbed, p1.name, currHealth, p1.hp);
+      if (this.showBattle) {
+
+        for (const p1 of this.fighters) {
+          const currHealth = [player, ...battleQueue].find(x => x.id === p1.id)?.hp;
+          if (currHealth !== undefined) {
+            this.progressBar(battleEmbed, p1.name, currHealth, p1.hp);
+          }
         }
+
       }
 
-      await message.edit({ embeds: [battleEmbed] });
-
+      await this.updateEmbed(message, battleEmbed);
       battleQueue.push(player);
 
       if (opponent.hp <= 0) {
@@ -109,6 +115,7 @@ export class Battle extends BaseBattle {
 
         this.onFighterDead && this.onFighterDead(opponent);
         this.msg.channel.send(text);
+        this.logBattle && console.log(text);
 
         if (battleQueue.length === 1) break;
       } 
@@ -121,7 +128,7 @@ export class Battle extends BaseBattle {
         opponent.skill!.close(opponent, player);
       }
 
-      await sleep(this.interval);
+      this.showBattle && await this.sleep();
     }
 
     const winner = battleQueue[0];
@@ -149,7 +156,7 @@ export class Battle extends BaseBattle {
     if (winner.imageUrl)
       winEmbed.setThumbnail(winner.imageUrl);
 
-    message.edit({ embeds: [winEmbed] });
+    await message.edit({ embeds: [winEmbed] });
     return this.fighters.find(x => x.id === winner.id)!;
   }
 }

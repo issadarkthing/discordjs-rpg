@@ -5,7 +5,7 @@ import { config } from "dotenv";
 
 config();
 
-const COMMAND_PREFIX = "-";
+const COMMAND_PREFIX = "!";
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 const commandManager = new CommandManager(COMMAND_PREFIX);
 
@@ -22,6 +22,8 @@ commandManager.registerCommandOnThrottleHandler((msg, cmd, timeLeft) => {
 })
 
 client.on("ready", () => console.log(client.user?.username, "is ready!"))
-client.on("messageCreate", msg => commandManager.handleMessage(msg));
+client.on("messageCreate", msg => { 
+  commandManager.handleMessage(msg);
+});
 
 client.login(process.env.BOT_TOKEN);
