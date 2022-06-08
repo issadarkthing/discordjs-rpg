@@ -1,10 +1,10 @@
-import { Message, MessageEmbed } from "discord.js";
+import { MessageEmbed, CommandInteraction, MessagePayload, MessageOptions } from "discord.js";
 import { RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
 
 export abstract class BaseBattle {
   protected round = 0;
-  protected msg: Message;
+  protected i: CommandInteraction;
   protected fighters: Fighter[];
   protected damageDealt: Map<string, number> = new Map();
   protected playerDiedText?: (fighter: Fighter) => string;
@@ -18,11 +18,11 @@ export abstract class BaseBattle {
   logBattle = false;
 
   /** 
-   * @param {Message} msg - discord.js's Message object
+   * @param {CommandInteraction} i - discord.js's CommandInteraction
    * @param {Fighter[]} fighters - array of Fighter's object
    * */
-  constructor(msg: Message, fighters: Fighter[]) {
-    this.msg = msg;
+  constructor(i: CommandInteraction, fighters: Fighter[]) {
+    this.i = i;
     this.fighters = [...new Set(fighters)];
   }
 
@@ -42,6 +42,22 @@ export abstract class BaseBattle {
       .fill(fill)
       .map((v, i) => (fillProgress > i ? v : path))
       .join("");
+  }
+
+  protected async reply(options: string | MessageEmbed) {
+    let content: { content?: string, embeds?: MessageEmbed[] };
+
+    if (options instanceof MessageEmbed) {
+      content = { embeds: [options] };
+    } else {
+      content = { content: options }
+    }
+
+    if (this.i.replied) {
+      await this.i.editReply(content)
+    } else {
+      await this.i.reply(content);
+    }
   }
 
   /** adds progress bar to battleEmbed */ 
@@ -125,9 +141,9 @@ export abstract class BaseBattle {
   /** 
    * Updates embed and log if enabled.
    * */
-  async updateEmbed(msg: Message, embed: MessageEmbed) {
+  async updateEmbed(embed: MessageEmbed) {
     this.logBattle && console.log(this.getEmbedInfo(embed));
-    this.showBattle && await msg.edit({ embeds: [embed] });
+    this.showBattle && await this.reply(embed);
   }
 
   /** 
@@ -135,6 +151,6 @@ export abstract class BaseBattle {
    * */
   async sendEmbed(embed: MessageEmbed) {
     this.logBattle && console.log(this.getEmbedInfo(embed));
-    this.showBattle && await this.msg.channel.send({ embeds: [embed] });
+    this.showBattle && await this.reply(embed);
   }
 }

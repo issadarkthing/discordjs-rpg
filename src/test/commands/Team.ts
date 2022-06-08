@@ -1,12 +1,13 @@
-import { Command } from "@jiman24/commandment";
-import { Message } from "discord.js";
+import { Command } from "@jiman24/slash-commandment";
+import { CommandInteraction } from "discord.js";
 import { Fighter } from "../..";
 import { TeamBattle } from "../../TeamBatle";
 
 export default class extends Command {
   name = "team";
+  description = "sample";
 
-  async exec(msg: Message) {
+  async exec(i: CommandInteraction) {
 
     const teamA = { 
       name: "Jaegerist", 
@@ -18,7 +19,7 @@ export default class extends Command {
       fighters: [new Fighter("jean"), new Fighter("annie")],
     }
 
-    const battle = new TeamBattle(msg, teamA, teamB);
+    const battle = new TeamBattle(i, teamA, teamB);
 
     await battle.run();
   }

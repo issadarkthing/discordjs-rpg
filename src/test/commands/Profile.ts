@@ -1,18 +1,19 @@
-import { Command } from "@jiman24/commandment";
-import { Message } from "discord.js";
+import { Command } from "@jiman24/slash-commandment";
+import { CommandInteraction } from "discord.js";
 import { Chest } from "../../Armor";
 import { Dragon } from "../../Pet";
 import { Player } from "../../Player";
 import { Rage } from "../../Skill";
 import { Sword } from "../../Weapon";
 
-export default class Profile extends Command {
+export default class extends Command {
   name = "profile";
+  description = "sample";
   aliases = ["p"];
 
-  async exec(msg: Message, args: string[]) {
+  async exec(i: CommandInteraction) {
 
-    const player = new Player(msg.author);
+    const player = new Player(i.user);
     player.skill = new Rage();
 
     const pet = new Dragon();
@@ -24,6 +25,6 @@ export default class Profile extends Command {
     const sword = new Sword();
     player.equipWeapon(sword);
     
-    msg.channel.send({ embeds: [player.show()] });
+    i.reply({ embeds: [player.show()] });
   }
 }

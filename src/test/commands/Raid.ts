@@ -1,5 +1,5 @@
-import { Command } from "@jiman24/commandment";
-import { Message } from "discord.js";
+import { Command } from "@jiman24/slash-commandment";
+import { CommandInteraction } from "discord.js";
 import { Chest } from "../../Armor";
 import { Battle } from "../../Battle";
 import { Dragon } from "../../Pet";
@@ -9,10 +9,11 @@ import { Fighter } from "../../Fighter";
 
 export default class extends Command {
   name = "raid";
+  description: string = "sample";
 
-  async exec(msg: Message, args: string[]) {
+  async exec(i: CommandInteraction) {
 
-    const author = new Player(msg.author);
+    const author = new Player(i.user);
     const bots = [
       new Fighter("Michael"),
       new Fighter("Mansion"),
@@ -32,7 +33,7 @@ export default class extends Command {
     const chest = new Chest();
     author.equipArmor(chest);
 
-    const battle = new Battle(msg, [author, boss, ...bots]);
+    const battle = new Battle(i, [author, boss, ...bots]);
 
     battle.setBoss(boss);
 

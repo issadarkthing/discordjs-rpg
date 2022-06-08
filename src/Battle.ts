@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { GOLD, random, sleep } from "./utils";
+import { GOLD, random } from "./utils";
 import { Fighter } from "./Fighter";
 import cloneDeep from "lodash.clonedeep";
 import { BaseBattle } from "./BaseBattle";
@@ -46,7 +46,7 @@ export class Battle extends BaseBattle {
       throw new Error("cannot battle with 1 or less player");
 
     const battleQueue = this.fighters.map(x => cloneDeep(x));
-    const message = await this.msg.channel.send("Starting battle");
+    const message = await this.reply("Starting battle");
 
     while (battleQueue.length !== 1) {
       this.round++;
@@ -70,21 +70,21 @@ export class Battle extends BaseBattle {
       if (playerSkillIntercept) {
         const skillEmbed = player.skill!.use(player, opponent);
 
-        await this.updateEmbed(message, skillEmbed);
+        await this.updateEmbed(skillEmbed);
         this.showBattle && await this.sleep();
       }
 
       if (opponentSkillIntercept) {
         const skillEmbed = opponent.skill!.use(opponent, player);
 
-        await this.updateEmbed(message, skillEmbed);
+        await this.updateEmbed(skillEmbed);
         this.showBattle && await this.sleep();
       }
 
       if (player.pet?.isIntercept()) {
         const petEmbed = player.pet.intercept(opponent);
         
-        await this.updateEmbed(message, petEmbed);
+        await this.updateEmbed(petEmbed);
         this.showBattle && await this.sleep();
       }
 
@@ -101,7 +101,7 @@ export class Battle extends BaseBattle {
 
       }
 
-      await this.updateEmbed(message, battleEmbed);
+      await this.updateEmbed(battleEmbed);
       battleQueue.push(player);
 
       if (opponent.hp <= 0) {
@@ -114,7 +114,7 @@ export class Battle extends BaseBattle {
         }
 
         this.onFighterDead && this.onFighterDead(opponent);
-        this.msg.channel.send(text);
+        this.reply(text);
         this.logBattle && console.log(text);
 
         if (battleQueue.length === 1) break;
@@ -144,7 +144,7 @@ export class Battle extends BaseBattle {
       if (boss.imageUrl)
         winEmbed.setThumbnail(boss.imageUrl);
 
-      await message.edit({ embeds: [winEmbed] });
+      await this.reply(winEmbed)
       return this.fighters.find(x => x.id === winner.id)!;
     }
 
@@ -156,7 +156,7 @@ export class Battle extends BaseBattle {
     if (winner.imageUrl)
       winEmbed.setThumbnail(winner.imageUrl);
 
-    await message.edit({ embeds: [winEmbed] });
+    await this.reply(winEmbed)
     return this.fighters.find(x => x.id === winner.id)!;
   }
 }

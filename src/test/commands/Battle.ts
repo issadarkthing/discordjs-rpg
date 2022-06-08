@@ -1,5 +1,6 @@
-import { Command } from "@jiman24/commandment";
-import { Message } from "discord.js";
+import { Command } from "@jiman24/slash-commandment";
+import { CommandError } from "@jiman24/slash-commandment/dist/Error";
+import { CommandInteraction } from "discord.js";
 import { Chest } from "../../Armor";
 import { Battle } from "../../Battle";
 import { Dragon } from "../../Pet";
@@ -9,15 +10,27 @@ import { Rage } from "../../Skill";
 
 export default class BattleCommand extends Command {
   name = "battle";
+  description: string = "sample";
   aliases = ["b"];
 
-  async exec(msg: Message, args: string[]) {
+  constructor() {
+    super();
 
-    const author = new Player(msg.author);
-    const opponents = msg.mentions.users.map(x => new Player(x));
+    this.addUserOption(option => 
+      option
+        .setName("player")
+        .setDescription("player you want to fight")
+        .setRequired(true)
+    )
+  }
 
-    if (opponents.length === 0)
-      return msg.channel.send("Please mention your opponent(s)");
+  async exec(i: CommandInteraction) {
+
+    const author = new Player(i.user);
+    const opponent = i.options.getUser("player");
+
+    if (!opponent)
+      throw new CommandError("Please mention your opponent(s)");
 
     author.skill = new Rage();
 
@@ -27,10 +40,8 @@ export default class BattleCommand extends Command {
     const chest = new Chest();
     author.equipArmor(chest);
 
-    const battle = new Battle(msg, [author, ...opponents]);
-
-    battle.showBattle = false;
-    battle.logBattle = true;
+    const opponentPlayer = new Player(opponent);
+    const battle = new Battle(i, [author, opponentPlayer]);
 
     await battle.run();
   }

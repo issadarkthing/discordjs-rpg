@@ -1,29 +1,26 @@
 import { Client } from "discord.js";
-import { CommandManager } from "@jiman24/commandment";
+import { CommandManager } from "@jiman24/slash-commandment";
 import path from "path";
 import { config } from "dotenv";
 
 config();
 
-const COMMAND_PREFIX = "!";
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-const commandManager = new CommandManager(COMMAND_PREFIX);
+const commandManager = new CommandManager({
+  client,
+  devGuildID: "899466085735223337",
+});
 
 commandManager.verbose = true;
-commandManager.registerCommands(path.resolve(__dirname, "./commands"));
 
-commandManager.registerCommandNotFoundHandler((msg, cmdName) => {
-  msg.channel.send(`Cannot find command "${cmdName}"`);
-})
 
-commandManager.registerCommandOnThrottleHandler((msg, cmd, timeLeft) => {
-  const time = (timeLeft / 1000).toFixed(2);
-  msg.channel.send(`You cannot run ${cmd.name} command after ${time} s`);
-})
+client.on("ready", () => { 
+  console.log(client.user?.username, "is ready!");
+  commandManager.registerCommands(path.resolve(__dirname, "./commands"));
+});
 
-client.on("ready", () => console.log(client.user?.username, "is ready!"))
-client.on("messageCreate", msg => { 
-  commandManager.handleMessage(msg);
+client.on("interactionCreate", i => { 
+  commandManager.handleInteraction(i);
 });
 
 client.login(process.env.BOT_TOKEN);

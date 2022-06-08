@@ -1,8 +1,8 @@
-import { Message, MessageEmbed } from "discord.js";
+import { CommandInteraction, Message, MessageEmbed } from "discord.js";
 import { Fighter } from ".";
 import { BaseBattle } from "./BaseBattle";
 import cloneDeep from "lodash.clonedeep";
-import { GOLD, isEven, random, sleep } from "./utils";
+import { GOLD, isEven, random } from "./utils";
 
 interface Team {
   name: string;
@@ -18,12 +18,12 @@ export class TeamBattle extends BaseBattle {
   interval = 1000; // reduce the time interval
 
   /** 
-   * @param {Message} msg - discord.js's Message object
+   * @param {CommandInteraction} i - Discord.js CommandInteraction
    * @param {Team} teamA - team
    * @param {Team} teamB - team
    * */
-  constructor(msg: Message, teamA: Team, teamB: Team) {
-    super(msg, [...teamA.fighters, ...teamB.fighters]);
+  constructor(i: CommandInteraction, teamA: Team, teamB: Team) {
+    super(i, [...teamA.fighters, ...teamB.fighters]);
 
     this.teamA = { ...teamA, fighters: teamA.fighters.map(x => cloneDeep(x)) };
     this.teamB = { ...teamB, fighters: teamB.fighters.map(x => cloneDeep(x)) };
@@ -42,7 +42,7 @@ export class TeamBattle extends BaseBattle {
     if (this.fighters.length <= 1)
       throw new Error("cannot battle with 1 or less player");
 
-    const message = await this.msg.channel.send("Starting battle");
+    const message = await this.reply("Starting battle");
     const teamAlength = this.teamA.fighters.length;
     const fighters = [...this.teamA.fighters, ...this.teamB.fighters];
 
@@ -61,21 +61,21 @@ export class TeamBattle extends BaseBattle {
       if (playerSkillIntercept) {
         const skillEmbed = player.skill!.use(player, opponent);
 
-        await this.updateEmbed(message, skillEmbed);
+        await this.updateEmbed(skillEmbed);
         this.showBattle && await this.sleep();
       }
 
       if (opponentSkillIntercept) {
         const skillEmbed = opponent.skill!.use(opponent, player);
 
-        await this.updateEmbed(message, skillEmbed);
+        await this.updateEmbed(skillEmbed);
         this.showBattle && await this.sleep();
       }
 
       if (player.pet?.isIntercept()) {
         const petEmbed = player.pet.intercept(opponent);
 
-        await this.updateEmbed(message, petEmbed);
+        await this.updateEmbed(petEmbed);
         this.showBattle && await this.sleep();
       }
 
@@ -97,7 +97,7 @@ export class TeamBattle extends BaseBattle {
         }
       }
 
-      await this.updateEmbed(message, battleEmbed);
+      await this.updateEmbed(battleEmbed);
 
       attackTeam.fighters.push(player);
 
@@ -110,7 +110,7 @@ export class TeamBattle extends BaseBattle {
           text = this.playerDiedText(opponent);
         }
 
-        this.msg.channel.send(text);
+        this.reply(text);
         this.logBattle && console.log(text);
 
         if (defendTeam.fighters.length === 0) break;
@@ -135,7 +135,7 @@ export class TeamBattle extends BaseBattle {
       .setDescription(`${winner.name} has won the battle!`);
 
 
-    message.edit({ embeds: [winEmbed] });
+    this.reply(winEmbed);
     return winner;
   }
 }

@@ -1,5 +1,5 @@
-import { Command } from "@jiman24/commandment";
-import { Message } from "discord.js";
+import { Command } from "@jiman24/slash-commandment";
+import { CommandInteraction, Message } from "discord.js";
 import { Pet } from "../../Pet";
 import { Player } from "../../Player";
 
@@ -8,13 +8,14 @@ class Dragon extends Pet {
   id = "drag";
 }
 
-export default class PetCommand extends Command {
+export default class extends Command {
   name = "pet";
+  description: string = "sample";
   aliases = [];
 
-  async exec(msg: Message, args: string[]) {
+  async exec(i: CommandInteraction) {
 
-    const author = new Player(msg.author);
+    const author = new Player(i.user);
     const pet = new Dragon();
     pet.setOwner(author);
     pet.imageUrl = "https://cdn.discordapp.com/attachments/574852830125359126/863997311532007475/8edc1273be7f8b1c4be3d72af3358e9b.png";
@@ -23,6 +24,6 @@ export default class PetCommand extends Command {
 
     const petEmbed = pet.show();
 
-    msg.channel.send({ embeds: [petEmbed] });
+    i.editReply({ embeds: [petEmbed] });
   }
 }

@@ -1,11 +1,12 @@
-import { Message } from "discord.js";
-import { Command } from "@jiman24/commandment";
+import { CommandInteraction } from "discord.js";
+import { Command } from "@jiman24/slash-commandment";
 
 export default class extends Command {
   name = "ping";
+  description = "sample";
   throttle = 10 * 1000; // 10 seconds
 
-  exec(msg: Message, args: string[]) {
-    msg.channel.send("pong");
+  async exec(i: CommandInteraction) {
+    i.reply("pong");
   }
 }
