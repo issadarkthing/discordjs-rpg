@@ -3,3 +3,4 @@ src/
 dist/test/
 docs/
 .env
+data/josh.sqlite
