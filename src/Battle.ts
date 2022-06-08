@@ -46,7 +46,7 @@ export class Battle extends BaseBattle {
       throw new Error("cannot battle with 1 or less player");
 
     const battleQueue = this.fighters.map(x => cloneDeep(x));
-    const message = await this.reply("Starting battle");
+    await this.reply("Starting battle");
 
     while (battleQueue.length !== 1) {
       this.round++;
