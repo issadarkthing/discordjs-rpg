@@ -111,6 +111,13 @@ export abstract class BaseBattle {
   }
 
   /** 
+   * Gets fighters. Usually used to get the remaining HP
+   * */
+  getFighters() {
+    return this.fighters;
+  }
+
+  /** 
    * Changes the discord.js message sent when player dies in the battle.
    * */
   setPlayerDeadText(text: (fighter: Fighter) => string) {
