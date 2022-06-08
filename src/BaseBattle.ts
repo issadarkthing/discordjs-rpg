@@ -141,15 +141,7 @@ export abstract class BaseBattle {
   /** 
    * Updates embed and log if enabled.
    * */
-  async updateEmbed(embed: MessageEmbed) {
-    this.logBattle && console.log(this.getEmbedInfo(embed));
-    this.showBattle && await this.reply(embed);
-  }
-
-  /** 
-   * Sends embed and log if enabled.
-   * */
-  async sendEmbed(embed: MessageEmbed) {
+  protected async updateEmbed(embed: MessageEmbed) {
     this.logBattle && console.log(this.getEmbedInfo(embed));
     this.showBattle && await this.reply(embed);
   }
