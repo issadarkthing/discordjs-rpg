@@ -1,12 +1,17 @@
-import { MessageEmbed, CommandInteraction, MessagePayload, MessageOptions } from "discord.js";
+import { MessageEmbed, CommandInteraction } from "discord.js";
 import { RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
+
+interface PlayerGameStat {
+  totalDamageDealt: number;
+  remainingHP: number;
+}
 
 export abstract class BaseBattle {
   protected round = 0;
   protected i: CommandInteraction;
   protected fighters: Fighter[];
-  protected damageDealt: Map<string, number> = new Map();
+  protected gameStats: Map<string, PlayerGameStat> = new Map();
   protected playerDiedText?: (fighter: Fighter) => string;
   /** Time interval to change to next frame (in milliseconds by default is 6000) */
   interval = 4000;
@@ -96,9 +101,41 @@ export abstract class BaseBattle {
     if (p1.imageUrl)
       battleEmbed.setThumbnail(p1.imageUrl);
 
-    const totalDamageDealt = this.damageDealt.get(p1.id) || 0;
+    const p1Stat = this.gameStats.get(p1.id);
+    
+    if (p1Stat) {
 
-    this.damageDealt.set(p1.id, totalDamageDealt + damageDealt);
+      this.gameStats.set(p1.id, {
+        remainingHP: p1.hp,
+        totalDamageDealt: p1Stat.totalDamageDealt + damageDealt,
+      });
+
+    } else {
+
+      this.gameStats.set(p1.id, { 
+        remainingHP: p1.hp, 
+        totalDamageDealt: damageDealt,
+      });
+
+    }
+
+    const p2Stat = this.gameStats.get(p2.id);
+
+    if (p2Stat) {
+
+      this.gameStats.set(p2.id, {
+        ...p2Stat,
+        remainingHP: p2.hp,
+      })
+
+    } else {
+
+      this.gameStats.set(p2.id, {
+        remainingHP: p2.hp,
+        totalDamageDealt: 0,
+      });
+    }
+
 
     return battleEmbed;
   }
@@ -107,15 +144,16 @@ export abstract class BaseBattle {
    * Gets total damage dealt for a particular fighter
    * */
   getDamageDealt(id: string) {
-    return this.damageDealt.get(id);
+    return this.gameStats.get(id)?.totalDamageDealt;
   }
 
   /** 
-   * Gets fighters. Usually used to get the remaining HP
+   * Get remaining HP for a particular fighter
    * */
-  getFighters() {
-    return this.fighters;
+  getRemainingHP(id: string) {
+    return this.gameStats.get(id)?.remainingHP;
   }
+
 
   /** 
    * Changes the discord.js message sent when player dies in the battle.
