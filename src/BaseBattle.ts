@@ -74,7 +74,7 @@ export abstract class BaseBattle {
     const healthBar = this.bar(hp, maxHP);
     const remainingHP = hp >= 0 ? Math.round(hp) : 0;
 
-    embed.setFields([
+    embed.addFields([
       { 
         name: `${name}'s remaining HP`,
         value: `\`${healthBar}\` \`${remainingHP}/${maxHPStr}\``,

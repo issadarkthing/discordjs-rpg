@@ -102,6 +102,7 @@ export class Battle extends BaseBattle {
       }
 
       await this.updateEmbed(battleEmbed);
+
       battleQueue.push(player);
 
       if (opponent.hp <= 0) {
