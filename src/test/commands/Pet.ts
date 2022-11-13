@@ -1,5 +1,5 @@
 import { Command } from "@jiman24/slash-commandment";
-import { CommandInteraction, Message } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import { Pet } from "../../Pet";
 import { Player } from "../../Player";
 
@@ -14,6 +14,7 @@ export default class extends Command {
   aliases = [];
 
   async exec(i: CommandInteraction) {
+    await i.deferReply();
 
     const author = new Player(i.user);
     const pet = new Dragon();
