@@ -5,7 +5,14 @@ import { config } from "dotenv";
 
 config();
 
-const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+const client = new Client({ 
+  intents: [
+    "Guilds", 
+    "GuildMembers", 
+    "GuildMessages",
+  ],
+});
+
 const commandManager = new CommandManager({
   client,
   devGuildID: "899466085735223337",

@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import { formatPercent, inlineCode, SILVER } from "./utils";
@@ -32,11 +32,13 @@ export abstract class Armor extends Base {
   show() {
     const armorRate = formatPercent(this.armor);
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Armor")
       .setColor(SILVER)
-      .addField("Name", this.name, true)
-      .addField("Armor", inlineCode(armorRate), true)
+      .setFields([
+        { name: "Name", value: this.name, inline: true },
+        { name: "Armor", value: inlineCode(armorRate), inline: true },
+      ])
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);

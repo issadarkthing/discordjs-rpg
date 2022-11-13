@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import { inlineCode, SILVER } from "./utils";
@@ -29,11 +29,13 @@ export abstract class Weapon extends Base {
   /** MessageEmbed that represents Weapon */
   show() {
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Weapon")
       .setColor(SILVER)
-      .addField("Name", this.name, true)
-      .addField("Attack", inlineCode(this.attack), true)
+      .setFields([
+        { name: "Name", value: this.name, inline: true },
+        { name: "Attack", value: inlineCode(this.attack), inline: true },
+      ])
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);

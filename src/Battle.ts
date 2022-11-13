@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { GOLD, random } from "./utils";
 import { Fighter } from "./Fighter";
 import cloneDeep from "lodash.clonedeep";
@@ -136,7 +136,7 @@ export class Battle extends BaseBattle {
     const boss = this.boss;
     // if the boss loses
     if (boss && winner.id !== boss.id) {
-      const winEmbed = new MessageEmbed()
+      const winEmbed = new EmbedBuilder()
         .setColor(GOLD)
         .setTitle("Raid Successfull")
         .setDescription(`${boss.name} has been defeated!`);
@@ -148,7 +148,7 @@ export class Battle extends BaseBattle {
       return this.fighters.find(x => x.id === winner.id)!;
     }
 
-    const winEmbed = new MessageEmbed()
+    const winEmbed = new EmbedBuilder()
       .setColor(GOLD)
       .setTitle("Battle Winner")
       .setDescription(`${winner.name} has won the battle!`);

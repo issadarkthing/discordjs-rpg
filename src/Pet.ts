@@ -1,5 +1,5 @@
 import { oneLine } from "common-tags";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { Base } from "./Base";
 import { Fighter } from "./Fighter";
 import { bold, BROWN, formatPercent, inlineCode, random } from "./utils";
@@ -44,12 +44,14 @@ export abstract class Pet extends Base {
   /** MessageEmbed that represents Pet */
   show() {
     const interceptRate = formatPercent(this.interceptRate);
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Pet")
       .setColor(BROWN)
-      .addField("Name", this.name, true)
-      .addField("Intercept Rate", inlineCode(interceptRate), true)
-      .addField("Attack", inlineCode(this.attack), true)
+      .setFields([
+        { name: "Name", value: this.name, inline: true },
+        { name: "Intercept Rate", value: inlineCode(interceptRate), inline: true },
+        { name: "Attack", value: inlineCode(this.attack), inline: true },
+      ])
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);
@@ -65,7 +67,7 @@ export abstract class Pet extends Base {
 
     opponent.hp -= damageDealt;
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Pet Interception")
       .setColor(BROWN)
       .setDescription(

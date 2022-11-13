@@ -1,4 +1,4 @@
-import { CommandInteraction, Message, MessageEmbed } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 import { Fighter } from ".";
 import { BaseBattle } from "./BaseBattle";
 import cloneDeep from "lodash.clonedeep";
@@ -42,7 +42,7 @@ export class TeamBattle extends BaseBattle {
     if (this.fighters.length <= 1)
       throw new Error("cannot battle with 1 or less player");
 
-    const message = await this.reply("Starting battle");
+    await this.reply("Starting battle");
     const teamAlength = this.teamA.fighters.length;
     const fighters = [...this.teamA.fighters, ...this.teamB.fighters];
 
@@ -87,9 +87,9 @@ export class TeamBattle extends BaseBattle {
         const currHealth = fighters.find(x => x.id === p1.id)?.hp;
 
         if (i === 0) {
-          battleEmbed.addField("\u200b", `**${this.teamA.name}**`);
+          battleEmbed.addFields({ name: "\u200b", value: `**${this.teamA.name}**` });
         } else if (i === teamAlength) {
-          battleEmbed.addField("\u200b", `**${this.teamB.name}**`);
+          battleEmbed.addFields({ name: "\u200b", value: `**${this.teamB.name}**` });
         }
 
         if (currHealth !== undefined) {
@@ -129,7 +129,7 @@ export class TeamBattle extends BaseBattle {
 
     const winner = this.teamA.fighters.length > 0 ? this.teamA : this.teamB;
 
-    const winEmbed = new MessageEmbed()
+    const winEmbed = new EmbedBuilder()
       .setColor(GOLD)
       .setTitle("Battle Winner")
       .setDescription(`${winner.name} has won the battle!`);

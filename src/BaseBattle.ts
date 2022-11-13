@@ -1,4 +1,4 @@
-import { MessageEmbed, CommandInteraction } from "discord.js";
+import { EmbedBuilder, CommandInteraction } from "discord.js";
 import { RED, sleep } from "./utils";
 import { Fighter } from "./Fighter";
 
@@ -49,10 +49,10 @@ export abstract class BaseBattle {
       .join("");
   }
 
-  protected async reply(options: string | MessageEmbed) {
-    let content: { content?: string, embeds?: MessageEmbed[] };
+  protected async reply(options: string | EmbedBuilder) {
+    let content: { content?: string, embeds?: EmbedBuilder[] };
 
-    if (options instanceof MessageEmbed) {
+    if (options instanceof EmbedBuilder) {
       content = { embeds: [options] };
     } else {
       content = { content: options }
@@ -67,17 +67,19 @@ export abstract class BaseBattle {
 
   /** adds progress bar to battleEmbed */ 
   protected progressBar(
-    embed: MessageEmbed, name: string, hp: number, maxHP: number,
+    embed: EmbedBuilder, name: string, hp: number, maxHP: number,
   ) {
 
     const maxHPStr = Math.round(maxHP);
     const healthBar = this.bar(hp, maxHP);
     const remainingHP = hp >= 0 ? Math.round(hp) : 0;
 
-    embed.addField(
-      `${name}'s remaining HP`,
-      `\`${healthBar}\` \`${remainingHP}/${maxHPStr}\``
-    );
+    embed.setFields([
+      { 
+        name: `${name}'s remaining HP`,
+        value: `\`${healthBar}\` \`${remainingHP}/${maxHPStr}\``,
+      },
+    ]);
   }
 
   protected attack(p1: Fighter, p2: Fighter) {
@@ -89,14 +91,16 @@ export abstract class BaseBattle {
 
     p2.hp -= damageDealt;
 
-    const battleEmbed = new MessageEmbed()
+    const battleEmbed = new EmbedBuilder()
       .setColor(RED)
-      .addField("Attacking Player", p1.name, true)
-      .addField("Defending Player", p2.name, true)
-      .addField("Round", `\`${this.round.toString()}\``, true)
-      .addField("Attack Rate", `\`${Math.round(attackRate)}${critText}\``, true)
-      .addField("Damage Reduction", `\`${Math.round(armorProtection)}\``, true)
-      .addField("Damage Done", `\`${Math.round(damageDealt)}\``, true);
+      .setFields([
+        { name: "Attacking Player", value: p1.name, inline: true },
+        { name: "Defending Player", value: p2.name, inline: true },
+        { name: "Round", value: `\`${this.round.toString()}\``, inline: true },
+        { name: "Attack Rate", value: `\`${Math.round(attackRate)}${critText}\``, inline: true },
+        { name: "Damage Reduction", value: `\`${Math.round(armorProtection)}\``, inline: true },
+        { name: "Damage Done", value: `\`${Math.round(damageDealt)}\``, inline: true },
+      ]);
 
     if (p1.imageUrl)
       battleEmbed.setThumbnail(p1.imageUrl);
@@ -172,11 +176,11 @@ export abstract class BaseBattle {
     return this;
   }
 
-  private getEmbedInfo(embed: MessageEmbed) {
+  private getEmbedInfo(embed: EmbedBuilder) {
 
-    let result = embed.description ? `\nDescription: ${embed.description}` : "";
+    let result = embed.data.description ? `\nDescription: ${embed.data.description}` : "";
 
-    for (const field of embed.fields) {
+    for (const field of embed.data.fields!) {
       result += `\n${field.name}: ${field.value}`;
     }
 
@@ -186,7 +190,7 @@ export abstract class BaseBattle {
   /** 
    * Updates embed and log if enabled.
    * */
-  protected async updateEmbed(embed: MessageEmbed) {
+  protected async updateEmbed(embed: EmbedBuilder) {
     this.logBattle && console.log(this.getEmbedInfo(embed));
     this.showBattle && await this.reply(embed);
   }

@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { Armor } from "./Armor";
 import { Base } from "./Base";
 import { Pet } from "./Pet";
@@ -90,19 +90,21 @@ export class Fighter extends Base {
       .map((x, i) => `${i + 1}. ${x.name}`)
       .join("\n");
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Profile")
       .setColor(GOLD)
-      .addField("Name", this.name)
-      .addField("Attack", inlineCode(Math.round(this.attack).toString()), true)
-      .addField("HP", inlineCode(Math.round(this.hp).toString()), true)
-      .addField("Armor", inlineCode(armor), true)
-      .addField("Crit Chance", inlineCode(critChance), true)
-      .addField("Crit Damage", inlineCode(`x${this.critDamage.toFixed(1)}`), true)
-      .addField("Skill", this.skill?.name || "none", true)
-      .addField("Pet", this.pet?.name || "none")
-      .addField("Armors", armorList || "none", true)
-      .addField("Weapons", weaponList || "none", true)
+      .setFields([
+        { name: "Name", value: this.name },
+        { name: "Attack", value: inlineCode(Math.round(this.attack).toString()), inline: true },
+        { name: "HP", value: inlineCode(Math.round(this.hp).toString()), inline: true },
+        { name: "Armor", value: inlineCode(armor), inline: true },
+        { name: "Crit Chance", value: inlineCode(critChance), inline: true },
+        { name: "Crit Damage", value: inlineCode(`x${this.critDamage.toFixed(1)}`), inline: true },
+        { name: "Skill", value: this.skill?.name || "none", inline: true },
+        { name: "Pet", value: this.pet?.name || "none" },
+        { name: "Armors", value: armorList || "none", inline: true },
+        { name: "Weapons", value: weaponList || "none", inline: true },
+      ])
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);
@@ -124,7 +126,7 @@ export class Fighter extends Base {
           stat += ` ${RED_CIRCLE}`;
         }
 
-        embed.fields[i].value = inlineCode(stat);
+        embed.data.fields![i].value = inlineCode(stat);
 
         i++;
       }
@@ -142,7 +144,7 @@ export class Fighter extends Base {
           stat += ` ${RED_CIRCLE}`;
         }
 
-        embed.fields[i].value = inlineCode(stat);
+        embed.data.fields![i].value = inlineCode(stat);
 
         i++;
       }
@@ -161,7 +163,7 @@ export class Fighter extends Base {
           stat += ` ${RED_CIRCLE}`;
         }
 
-        embed.fields[i].value = inlineCode(stat);
+        embed.data.fields![i].value = inlineCode(stat);
 
         i++;
       }

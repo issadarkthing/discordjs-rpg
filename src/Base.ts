@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 
 
 /** Base class which every entity must extend */
@@ -11,5 +11,5 @@ export abstract class Base {
    * */
   abstract id: string;
   /** MessageEmbed which represents the entity */
-  abstract show(): MessageEmbed;
+  abstract show(): EmbedBuilder;
 }

@@ -1,5 +1,5 @@
 import { oneLine } from "common-tags";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { Base } from "./Base";
 import { Fighter } from "./Fighter";
 import { formatPercent, GREEN, inlineCode, random } from "./utils";
@@ -51,9 +51,9 @@ export abstract class Skill extends Base {
 
   /** 
    * Mutates fighter's attributes during battle
-   * @returns {MessageEmbed} The embed will be shown during battle.
+   * @returns {EmbedBuilder} The embed will be shown during battle.
    * */
-  abstract use(player: Fighter, opponent: Fighter): MessageEmbed;
+  abstract use(player: Fighter, opponent: Fighter): EmbedBuilder;
 
   /** Clean up or remove any attribute changes before next round */
   abstract close(player: Fighter, opponent: Fighter): void;
@@ -71,12 +71,14 @@ export abstract class Skill extends Base {
   /** MessageEmbed that represents Skill */
   show() {
     const interceptRate = formatPercent(this.interceptRate);
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Skill")
       .setColor(GREEN)
-      .addField("Name", this.name)
-      .addField("Intercept Rate", inlineCode(interceptRate),true)
-      .addField("Description", this.description)
+      .setFields([
+        { name: "Name", value: this.name },
+        { name: "Intercept Rate", value: inlineCode(interceptRate), inline:true },
+        { name: "Description", value: this.description },
+      ])
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);
@@ -94,7 +96,7 @@ export class Rage extends Skill {
   use(p1: Fighter, p2: Fighter) {
     p1.attack *= 2;
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Skill interception")
       .setColor(GREEN)
       .setDescription(
