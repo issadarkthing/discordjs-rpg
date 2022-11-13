@@ -10,6 +10,8 @@ library is freely available to be used by anyone as it is MIT licensed.
 - Extensible
 - No database constraint
 
+## Required package
+This package requires `discord.js@v14` in order to work.
 
 ### Documentation
 discordjs-rpg documentation website -
