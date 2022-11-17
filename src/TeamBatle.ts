@@ -73,7 +73,7 @@ export class TeamBattle extends BaseBattle {
       }
 
       if (player.pet?.isIntercept()) {
-        const petEmbed = player.pet.intercept(opponent);
+        const petEmbed = player.pet.intercept(player, opponent);
 
         await this.updateEmbed(petEmbed);
         this.showBattle && await this.sleep();

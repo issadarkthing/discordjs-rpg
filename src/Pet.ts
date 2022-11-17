@@ -60,7 +60,7 @@ export abstract class Pet extends Base {
   }
 
   /** Action to take by Pet when in Battle */
-  intercept(opponent: Fighter) {
+  intercept(owner: Fighter, opponent: Fighter) {
 
     const armorProtection = opponent.armor * this.attack;
     const damageDealt = this.attack - armorProtection;
