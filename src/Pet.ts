@@ -29,6 +29,8 @@ export abstract class Pet extends Base {
   interceptRate = 0.05;
   /** Damage dealt when attack */
   attack = 5;
+  /** Description of the pet */
+  description: string = "";
 
   /** Returns true if intercept */
   isIntercept() {
@@ -51,7 +53,10 @@ export abstract class Pet extends Base {
         { name: "Name", value: this.name, inline: true },
         { name: "Intercept Rate", value: inlineCode(interceptRate), inline: true },
         { name: "Attack", value: inlineCode(this.attack), inline: true },
-      ])
+      ]);
+
+    if (this.description)
+      embed.setDescription(this.description);
 
     if (this.imageUrl)
       embed.setThumbnail(this.imageUrl);
