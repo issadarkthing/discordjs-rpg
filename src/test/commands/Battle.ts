@@ -27,7 +27,7 @@ export default class BattleCommand extends Command {
   async exec(i: CommandInteraction) {
 
     const author = new Player(i.user);
-    const opponent = i.options.getUser("player");
+    const opponent = i.options.get("player", true).user;
 
     if (!opponent)
       throw new CommandError("Please mention your opponent(s)");
