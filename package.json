@@ -1,6 +1,6 @@
 {
   "name": "@jiman24/discordjs-rpg",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "discord rpg framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@jiman24/slash-commandment": "^2.0.1",
     "common-tags": "^1.8.0",
-    "discord.js": "^14.16.0",
+    "discord.js": "^14.16.3",
     "dotenv": "^10.0.0",
     "lodash.clonedeep": "^4.5.0",
     "random-js": "^2.1.0"

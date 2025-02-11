@@ -402,7 +402,7 @@ discord.js@^13.1.0:
     node-fetch "^2.6.7"
     ws "^8.13.0"
 
-discord.js@^14.16.0, discord.js@^14.16.3:
+discord.js@^14.16.3:
   version "14.18.0"
   resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-14.18.0.tgz#880f521f1717eadd92eee0b7f85c7ee3bd724b24"
   integrity sha512-SvU5kVUvwunQhN2/+0t55QW/1EHfB1lp0TtLZUSXVHDmyHTrdOj5LRKdR0zLcybaA15F+NtdWuWmGOX9lE+CAw==
