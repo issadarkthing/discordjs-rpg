@@ -58,7 +58,7 @@ export abstract class BaseBattle {
       content = { content: options }
     }
 
-    if (this.i.replied) {
+    if (this.i.replied || this.i.deferred) {
       await this.i.editReply(content)
     } else {
       await this.i.reply(content);
